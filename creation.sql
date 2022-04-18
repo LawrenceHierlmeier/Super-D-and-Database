@@ -15,7 +15,7 @@ CREATE TABLE INVENTORY (
     ITEMS     CHAR(30),
     CHARACTER_NAME     CHAR(30),
     FOREIGN KEY (CHARACTER_NAME) REFERENCES CHARACTER(NAME)
-        ON DELETE CASCADE
+        ON DELETE CASCADE    /*deleting character also deletes inventory*/
     );
     
 CREATE TABLE CAMPAIGN (
@@ -64,5 +64,5 @@ CREATE TABLE SUB_RACE (
     RACIAL_FEATS    CHAR(100),
     PRIMARY_RACE_NAME    CHAR(30)    NOT NULL,
     FOREIGN KEY (PRIMARY_RACE_NAME) REFERENCES RACE(NAME)
-        ON DELETE CASCADE
+        ON DELETE CASCADE /*deleting primary race deletes sub race*/
     );
