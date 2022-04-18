@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Home</title>
+</head>
+<body>
+<ul>
+    {% for item in nav.top %}
+    <li class="{{ 'active' if item.is_active else '' }}">
+        <a href="{{ item.url }}">{{ item.label }}</a>
+    </li>
+    {% endfor %}
+
+    {% for item in chars %}
+    <h1>{{ item.name }}</h1>
+    <p>{{ item.race }}</p>
+    <p>{{ item.class }}</p>
+    {% endfor %}
+</ul>
+</body>
+</html>
