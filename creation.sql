@@ -7,8 +7,6 @@ CREATE TABLE CHARACTER (
     CONSTITUTION    INT    CHECK(CONSTITUTION>=0),
     CHARISMA    INT    CHECK(CHARISMA>=0),
     RACE_NAME     CHAR(30),
-    CLASS_NAME    CHAR(30),
-    FEAT_NAME    CHAR(30),
     PRIMARY KEY (NAME),
     FOREIGN KEY (RACE_NAME) REFERENCES RACE(NAME)
         ON UPDATE CASCADE    /*if a race's name is altered, update all character tuples with that race name*/
@@ -41,22 +39,14 @@ CREATE TABLE CLASS (
     PROFICIENCY_BONUS    INT    CHECK(PROFICIENCY_BONUS>=0),
     CLASS_FEATS    CHAR(100),
     ABILITY_SCORE_INCREASE    INT    CHECK(ABILITY_SCORE_INCREASE>=0),
-    CHARACTER_NAME    CHAR(30),
-    PRIMARY KEY (NAME),
-    FOREIGN KEY (CHARACTER_NAME) REFERENCES CHARACTER(NAME)
-        ON DELETE CASCADE    /*deleting a character deletes all class tuples with that character*/
-        ON UPDATE CASCADE    /*updating a character's name updates all class tuples with that character*/
+    PRIMARY KEY (NAME)
     );
 
 CREATE TABLE FEATS (
     NAME    CHAR(30)    NOT NULL,
     PREREQUISITES    CHAR(200),
     DESCRIPTION    CHAR(200)    NOT NULL,
-    CHARACTER_NAME    CHAR(30),
-    PRIMARY KEY (NAME),
-    FOREIGN KEY (CHARACTER_NAME) REFERENCES CHARACTER(NAME)
-        ON DELETE CASCADE    /* deleting a character deletes all feats tuples with that character*/
-        ON UPDATE CASCADE    /* updating a character's name updates all feats tuples with that character*/
+    PRIMARY KEY (NAME)
     );
     
 CREATE TABLE RACE (
