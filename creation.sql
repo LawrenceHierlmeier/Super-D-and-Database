@@ -6,10 +6,13 @@ CREATE TABLE CHARACTER (
     WISDOM    INT    CHECK(WISDOM>=0),
     CONSTITUTION    INT    CHECK(CONSTITUTION>=0),
     CHARISMA    INT    CHECK(CHARISMA>=0),
-    RACE_NAME     CHAR(30),
+    RACE_NAME     CHAR(30)    NOT NULL,
+    CAMPAIGN_NAME    CHAR(30),
     PRIMARY KEY (NAME),
     FOREIGN KEY (RACE_NAME) REFERENCES RACE(NAME)
-        ON UPDATE CASCADE    /*if a race's name is altered, update all character tuples with that race name*/
+        ON UPDATE CASCADE,    /*if a race's name is altered, update all character tuples with that race name*/
+    FOREIGN KEY (CAMPAIGN_NAME) REFERENCES CAMPAIGN(NAME)
+        ON UPDATE CASCADE    /*if a campaign's name is altered, update all character tuples with that campaign name*/
     );
     
 CREATE TABLE INVENTORY (
@@ -24,10 +27,7 @@ CREATE TABLE CAMPAIGN (
     NAME     CHAR(30)    NOT NULL,
     REGION    CHAR(30)    NOT NULL,
     NPCS    INT    CHECK(NPCS>=0),
-    CHARACTER_NAME    CHAR(30)    NOT NULL,
     PRIMARY KEY (NAME)
-    FOREIGN KEY (CHARACTER_NAME) REFERENCES CHARACTER(NAME)
-        ON UPDATE CASCADE /*updating a character's name updates all campaign tuples with that character*/
     );
     
 CREATE TABLE CLASS (
