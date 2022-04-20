@@ -25,11 +25,21 @@ def add_feats():
 def modify_character():
     pass
 
-def delete_campaign():
-    pass
+def delete_campaign(campaign_name):
+    with DatabaseConnection('CS2300Proj.db') as connection:
+        cursor = connection.cursor()
+    
+        delete_query = "DELETE FROM CAMPAIGN WHERE id = ?"
+        cursor.execute(delete_query, campaign_name)
+        cursor.close()
 
-def remove_character_from_campaign():
-    pass
+def remove_character_from_campaign(character_name):
+    with DatabaseConnection('CS2300Proj.db') as connection:
+        cursor = connection.cursor()
+    
+        delete_query = "DELETE FROM CAMPAIGN WHERE id = ?"
+        cursor.execute(delete_query, character_name)
+        cursor.close()
 
 def add_item_to_inventory():
     pass
