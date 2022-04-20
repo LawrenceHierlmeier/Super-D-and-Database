@@ -19,7 +19,8 @@ CREATE TABLE CHARACTER (
     );
     
 CREATE TABLE INVENTORY (
-    ITEMS     CHAR(30),
+    ITEM     CHAR(30),
+    ITEM_WEIGHT    INT    CHECK(ITEM_WEIGHT>0),
     CHARACTER_NAME     CHAR(30),
     FOREIGN KEY (CHARACTER_NAME) REFERENCES CHARACTER(NAME)
         ON DELETE CASCADE    /*deleting character also deletes inventory*/
