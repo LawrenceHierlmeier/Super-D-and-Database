@@ -10,8 +10,10 @@ CREATE TABLE CHARACTER (
     CAMPAIGN_NAME    CHAR(30),
     PRIMARY KEY (NAME),
     FOREIGN KEY (RACE_NAME) REFERENCES RACE(NAME)
+        ON DELETE CASCADE    /*if a race is deleted, all character tuples with that race are also deleted*/
         ON UPDATE CASCADE,    /*if a race's name is altered, update all character tuples with that race name*/
     FOREIGN KEY (CAMPAIGN_NAME) REFERENCES CAMPAIGN(NAME)
+        ON DELETE SET NULL    /*if a campaign is deleted, set CAMPAIGN_NAME to NULL*/
         ON UPDATE CASCADE    /*if a campaign's name is altered, update all character tuples with that campaign name*/
     );
     
@@ -21,6 +23,7 @@ CREATE TABLE INVENTORY (
     CHARACTER_NAME     CHAR(30)    NOT NULL,
     FOREIGN KEY (CHARACTER_NAME) REFERENCES CHARACTER(NAME)
         ON DELETE CASCADE    /*deleting character also deletes inventory*/
+        ON UPDATE CASCADE    /*updating a character's name updates the character's name in their inventory*/
     );
     
 CREATE TABLE CAMPAIGN (
