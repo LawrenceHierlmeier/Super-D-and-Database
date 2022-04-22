@@ -22,11 +22,15 @@ def home():
 @app.route('/characters')
 def character_list():
     chars = database.list_characters()
+    race_stats = []
 
-    #char_list = ' '.join(str(e) for e in chars)
+    for character in chars:
+        race_stats = database.get_race_attributes(chars[0]['race'])
 
-    return render_template('character_list.html', chars = chars)
-    #return chars
+    print(chars[0]['race'])
+    print(race_stats)
+
+    return render_template('character_list.html', chars=chars, race_stats=race_stats)
 
 
 if __name__ == '__main__':
