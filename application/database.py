@@ -31,7 +31,7 @@ def delete_character(name):
         cursor = connection.cursor()
         
         delete_query = "DELETE FROM CHARACTER " \
-                       "WHERE NAME = ?"
+                       "WHERE (NAME = ?)"
         cursor.execute(delete_query, name)
         cursor.commit()
         cursor.close()
@@ -64,7 +64,7 @@ def modify_character(old_name, new_name, intelligence, strength, dexterity, wisd
         update_query = "UPDATE CHARACTER " \
                        "SET NAME = ?, INTELLIGENCE = ?, STRENGTH = ?, DEXTERITY = ?, WISDOM = ?, CONSTITUTION = ?," \
                        "    CHARISMA = ?, RACE_NAME = ?" \
-                       "WHERE NAME = ?"
+                       "WHERE (NAME = ?)"
         cursor.execute(update_query, (new_name, intelligence, strength, dexterity,
                                       wisdom, constitution, charisma, race_name, old_name))
         cursor.commit()
@@ -76,7 +76,7 @@ def delete_campaign(campaign_name):
         cursor = connection.cursor()
     
         delete_query = "DELETE FROM CAMPAIGN " \
-                       "WHERE NAME = ?"
+                       "WHERE (NAME = ?)"
         cursor.execute(delete_query, campaign_name)
         cursor.commit()
         cursor.close()
@@ -88,23 +88,45 @@ def remove_character_from_campaign(character_name, campaign_name):
         #set campaign_name in CHARACTER to 'None'
         update_query1 = "UPDATE CHARACTER" \
                        "SET CAMPAIGN_NAME = 'None'" \
-                       "WHERE NAME = ? AND CAMPAIGN_NAME = ?"
+                       "WHERE (NAME = ? AND CAMPAIGN_NAME = ?)"
         cursor.execute(update_query1, (character_name, campaign_name))
         #decrement campaign player count
         update_query2 = "UPDATE CAMPAIGN" \
                        "SET NUM_PLAYERS = NUM_PLAYERS-1" \
-                       "WHERE NAME = ?"
+                       "WHERE (NAME = ?)"
         cursor.execute(update_query2, (campaign_name))
         cursor.commit()
         cursor.close()
         return
 
-def add_item_to_inventory(item, item_weight, character_name):
+def inventory_weight(character_name):
     with DatabaseConnection('CS2300Proj.db') as connection:
         cursor = connection.cursor()
 
-        add_query = "INSERT INTO INVENTORY VALUES (?, ?, ?)"
-        cursor.execute(add_query, (item, item_weight, character_name))
+        retrieve_query = "SELECT SUM(ITEM_WEIGHT)" \
+                         "FROM INVENTORY AS I" \
+                         "WHERE (I.CHARACTER_NAME = ?)"
+        cursor.execute(retrieve_query, character_name)
+        weight = cursor.fetchone()
+        cursor.commit()
+        cursor.close()
+        return weight[0]
+
+def add_item_to_inventory(item, item_weight, character_name):
+    with DatabaseConnection('CS2300Proj.db') as connection:
+        cursor = connection.cursor()
+        #get character strength score to calculate inventory weight capacity
+        retrieve_query = "SELECT STRENGTH" \
+                         "FROM CHARACTER" \
+                         "WHERE (NAME = ?)"
+        cursor.execute(retrieve_query, character_name)
+        capacity = cursor.fetchall()
+
+        if (inventory_weight(character_name) + item_weight <= capacity[0]):
+            add_query = "INSERT INTO INVENTORY VALUES (?, ?, ?)"
+            cursor.execute(add_query, (item, item_weight, character_name))
+        else:
+            print("Item is too heavy.")
         cursor.commit()
         cursor.close()
         return
@@ -115,7 +137,7 @@ def get_character_inventory(character_name):
 
         retrieve_query = "SELECT * " \
                          "FROM INVENTORY AS I " \
-                         "WHERE I.CHARACTER_NAME = ?"
+                         "WHERE (I.CHARACTER_NAME = ?)"
         cursor.execute(retrieve_query, character_name)
         inventory = cursor.fetchall()
         cursor.commit()
@@ -128,7 +150,7 @@ def add_character_to_campaign(campaign_name, character_name):
 
         update_query = "UPDATE CHARACTER " \
                        "SET CAMPAIGN_NAME = ? " \
-                       "WHERE NAME = ?"
+                       "WHERE (NAME = ?)"
         cursor.execute(update_query, (campaign_name, character_name))
         cursor.commit()
         cursor.close()
@@ -154,3 +176,14 @@ def add_character(name, intelligence, strength, dexterity, wisdom, constitution,
         cursor.commit()
         cursor.close()
         return
+
+def min_race_speed():
+    with DatabaseConnection('CS2300Proj.db') as connection:
+        cursor = connection.cursor()
+        #gets names of slowest races
+        retrieve_query = "SELECT R1.NAME, R1.SPEED" \
+                         "FROM RACE AS R1" \
+                         "WHERE (R1.SPEED = (SELECT MIN(SPEED)" \
+                         "                  FROM RACE AS R2))"
+        cursor.execute()
+    return
