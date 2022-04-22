@@ -117,6 +117,18 @@ def remove_character_from_campaign(character_name, campaign_name):
         cursor.close()
         return
 
+def num_items_in_inventory(character_name):
+    with DatabaseConnection('CS2300Proj.db') as connection:
+        cursor = connection.cursor()
+
+        retrieve_query = "SELECT COUNT(ITEM)" \
+                         "FROM INVENTORY" \
+                         "WHERE CHARACTER_NAME = ?"
+        cursor.execute(retrieve_query, character_name)
+        num = cursor.fetchone()
+        cursor.commit()
+        cursor.close()
+        return num[0]
 
 def inventory_weight(character_name):
     with DatabaseConnection('CS2300Proj.db') as connection:
@@ -165,7 +177,6 @@ def get_character_inventory(character_name):
         cursor.close()
         return inventory
 
-
 def add_character_to_campaign(campaign_name, character_name):
     with DatabaseConnection('CS2300Proj.db') as connection:
         cursor = connection.cursor()
@@ -205,10 +216,27 @@ def add_character(name, intelligence, strength, dexterity, wisdom, constitution,
 def min_race_speed():
     with DatabaseConnection('CS2300Proj.db') as connection:
         cursor = connection.cursor()
-        #gets names of slowest races
+        #gets names of slowest races and respective speeds
         retrieve_query = "SELECT R1.NAME, R1.SPEED" \
                          "FROM RACE AS R1" \
                          "WHERE (R1.SPEED = (SELECT MIN(SPEED)" \
                          "                  FROM RACE AS R2))"
         cursor.execute(retrieve_query)
-    return
+        races = cursor.fetchall()
+        cursor.commit()
+        cursor.close()
+        return races
+
+def max_race_speed():
+    with DatabaseConnection('CS2300Proj.db') as connection:
+        cursor = connection.cursor()
+        # gets names of fastest races and respective speeds
+        retrieve_query = "SELECT R1.NAME, R1.SPEED" \
+                         "FROM RACE AS R1" \
+                         "WHERE (R1.SPEED = (SELECT MAX(SPEED)" \
+                         "                  FROM RACE AS R2))"
+        cursor.execute(retrieve_query)
+        races = cursor.fetchall()
+        cursor.commit()
+        cursor.close()
+        return races
