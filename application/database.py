@@ -28,10 +28,10 @@ def get_character_info(name):
     with DatabaseConnection('CS2300Proj.db') as connection:
         cursor = connection.cursor()
 
-        retrieve_query = "SELECT C.NAME, C.RACE_NAME, S.NAME, H.CLASS_NAME, C.CAMPAIGN_NAME, P.FEAT_NAME" \
-                         "       C.INTELLIGENCE, C.STRENGTH, C.DEXTERITY, C.WISDOM, C.CONSTITUTION, C. CHARISMA, " \
+        retrieve_query = "SELECT C.NAME, C.RACE_NAME, S.NAME, H.CLASS_NAME, C.CAMPAIGN_NAME, P.FEAT_NAME," \
+                         "       C.INTELLIGENCE, C.STRENGTH, C.DEXTERITY, C.WISDOM, C.CONSTITUTION, C.CHARISMA" \
                          "FROM CHARACTER AS C, POSSESSES AS P, HAS AS H, SUB_RACE AS S" \
-                         "WHERE (C.NAME = ? AND C.NAME = P.CHARACTER_NAME AND C.NAME = H.CHARACTER_NAME " \
+                         "WHERE (C.NAME = ? AND C.NAME = P.CHARACTER_NAME AND C.NAME = H.CHARACTER_NAME" \
                          "       AND C.RACE_NAME = S.PRIMARY_RACE_NAME)"
         cursor.execute(retrieve_query, name)
 
@@ -43,7 +43,7 @@ def delete_character(name):
     with DatabaseConnection('CS2300Proj.db') as connection:
         cursor = connection.cursor()
         
-        delete_query = "DELETE FROM CHARACTER " \
+        delete_query = "DELETE FROM CHARACTER" \
                        "WHERE (NAME = ?)"
         cursor.execute(delete_query, name)
         cursor.commit()
@@ -77,7 +77,7 @@ def modify_character(old_name, new_name, intelligence, strength, dexterity, wisd
     with DatabaseConnection('CS2300Proj.db') as connection:
         cursor = connection.cursor()
 
-        update_query = "UPDATE CHARACTER " \
+        update_query = "UPDATE CHARACTER" \
                        "SET NAME = ?, INTELLIGENCE = ?, STRENGTH = ?, DEXTERITY = ?, WISDOM = ?, CONSTITUTION = ?," \
                        "    CHARISMA = ?, RACE_NAME = ?" \
                        "WHERE (NAME = ?)"
@@ -92,7 +92,7 @@ def delete_campaign(campaign_name):
     with DatabaseConnection('CS2300Proj.db') as connection:
         cursor = connection.cursor()
     
-        delete_query = "DELETE FROM CAMPAIGN " \
+        delete_query = "DELETE FROM CAMPAIGN" \
                        "WHERE (NAME = ?)"
         cursor.execute(delete_query, campaign_name)
         cursor.commit()
@@ -170,8 +170,8 @@ def add_character_to_campaign(campaign_name, character_name):
     with DatabaseConnection('CS2300Proj.db') as connection:
         cursor = connection.cursor()
 
-        update_query = "UPDATE CHARACTER " \
-                       "SET CAMPAIGN_NAME = ? " \
+        update_query = "UPDATE CHARACTER" \
+                       "SET CAMPAIGN_NAME = ?" \
                        "WHERE (NAME = ?)"
         cursor.execute(update_query, (campaign_name, character_name))
         cursor.commit()
@@ -210,5 +210,5 @@ def min_race_speed():
                          "FROM RACE AS R1" \
                          "WHERE (R1.SPEED = (SELECT MIN(SPEED)" \
                          "                  FROM RACE AS R2))"
-        cursor.execute()
+        cursor.execute(retrieve_query)
     return
