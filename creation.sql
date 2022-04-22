@@ -13,7 +13,13 @@ CREATE TABLE CLASS (
     PROFICIENCIES    VARCHAR(100)    NOT NULL,
     PROFICIENCY_BONUS    INT    CHECK(PROFICIENCY_BONUS>=0)    DEFAULT 0,
     CLASS_FEATS    VARCHAR(100),
-    ABILITY_SCORE_INCREASE    INT    CHECK(ABILITY_SCORE_INCREASE>=0)    DEFAULT 0,
+    ABILITY_SCORE_NAME    CHAR(20)    CHECK(ABILITY_SCORE_NAME = 'Intelligence' OR
+                                            ABILITY_SCORE_NAME = 'Strength' OR
+                                            ABILITY_SCORE_NAME = 'Dexterity' OR
+                                            ABILITY_SCORE_NAME = 'Wisdom' OR
+                                            ABILITY_SCORE_NAME = 'Constitution' OR
+                                            ABILITY_SCORE_NAME = 'Charisma'),
+    ABILITY_SCORE_INCREASE_VAL    INT    CHECK(ABILITY_SCORE_INCREASE_VAL>=0),
     PRIMARY KEY (NAME)
     );
 
@@ -22,7 +28,13 @@ CREATE TABLE RACE (
     RACIAL_FEATS    VARCHAR(100),
     LANGUAGES    VARCHAR(30)    NOT NULL,
     PROFICIENCIES    VARCHAR(100)    NOT NULL,
-    ABILITY_SCORE_INCREASE    INT    CHECK(ABILITY_SCORE_INCREASE>=0)    DEFAULT 0,
+    ABILITY_SCORE_NAME    CHAR(20)    CHECK(ABILITY_SCORE_NAME = 'Intelligence' OR
+                                            ABILITY_SCORE_NAME = 'Strength' OR
+                                            ABILITY_SCORE_NAME = 'Dexterity' OR
+                                            ABILITY_SCORE_NAME = 'Wisdom' OR
+                                            ABILITY_SCORE_NAME = 'Constitution' OR
+                                            ABILITY_SCORE_NAME = 'Charisma'),
+    ABILITY_SCORE_INCREASE_VAL    INT    CHECK(ABILITY_SCORE_INCREASE_VAL>=0),
     SPEED    INT    NOT NULL    CHECK(SPEED>=0),
     SIZE    INT    NOT NULL    CHECK(SIZE>=0),
     PRIMARY KEY (NAME)
@@ -31,7 +43,13 @@ CREATE TABLE RACE (
 CREATE TABLE SUB_RACE (
     NAME    VARCHAR(30)    NOT NULL,
     PROFICIENCIES    VARCHAR(100)    NOT NULL,
-    ABILITY_SCORE_INCREASE    INT    CHECK(ABILITY_SCORE_INCREASE>=0)    DEFAULT 0,
+    ABILITY_SCORE_NAME    CHAR(20)    CHECK(ABILITY_SCORE_NAME = 'Intelligence' OR
+                                            ABILITY_SCORE_NAME = 'Strength' OR
+                                            ABILITY_SCORE_NAME = 'Dexterity' OR
+                                            ABILITY_SCORE_NAME = 'Wisdom' OR
+                                            ABILITY_SCORE_NAME = 'Constitution' OR
+                                            ABILITY_SCORE_NAME = 'Charisma'),
+    ABILITY_SCORE_INCREASE_VAL    INT    CHECK(ABILITY_SCORE_INCREASE_VAL>=0),
     RACIAL_FEATS    VARCHAR(100),
     PRIMARY_RACE_NAME    VARCHAR(30)    NOT NULL,
     FOREIGN KEY (PRIMARY_RACE_NAME) REFERENCES RACE(NAME)
@@ -95,3 +113,5 @@ CREATE TABLE POSSESSES ( /*POSSESSES relation between CHARACTER and FEATS*/
         ON DELETE CASCADE    /*if feat is deleted, delete all POSSESSES tuples with that feat name*/
         ON UPDATE CASCADE    /*if feat name is updated, update all POSSESSES tuples with that feat name*/
     );
+    
+INSERT INTO CAMPAIGN VALUES ('None', 'None', 0, 0); /*tuple for characters who aren't in a campaign, handles foreign key issue*/
