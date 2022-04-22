@@ -55,7 +55,7 @@ CREATE TABLE CHARACTER (
     CONSTITUTION    INT    CHECK(CONSTITUTION>=0)    DEFAULT 0,
     CHARISMA    INT    CHECK(CHARISMA>=0)    DEFAULT 0,
     RACE_NAME     VARCHAR(30)    NOT NULL,
-    CAMPAIGN_NAME    VARCHAR(30)    DEFAULT 'None',
+    CAMPAIGN_NAME    VARCHAR(30)    NOT NULL    DEFAULT 'None',
     PRIMARY KEY (NAME),
     FOREIGN KEY (RACE_NAME) REFERENCES RACE(NAME)
         ON DELETE CASCADE    /*if a race is deleted, all character tuples with that race are also deleted*/
