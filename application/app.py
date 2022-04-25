@@ -1,4 +1,4 @@
-from flask import Flask, render_template
+from flask import Flask, render_template, request
 from flask_navigation import Navigation
 
 import database
@@ -10,7 +10,9 @@ nav = Navigation(app)
 # Initializing Navigation
 nav.Bar('top', [
     nav.Item('Home', 'home'),
-    nav.Item('Characters', 'character_list')
+    nav.Item('Characters', 'character_list'),
+    nav.Item('Add Character', 'insert_character'),
+    nav.Item('Add Campaign', 'insert_campaign')
 ])
 
 
@@ -32,6 +34,25 @@ def character_list():
 
     return render_template('character_list.html', chars=chars, race_stats=race_stats)
 
+@app.route('/add_character', methods=["GET", "POST"])
+def insert_character():
+    if request.method == "POST":
+        name = request.form['Name']
+        intelligence = request.form['Intelligence']
+        strength = request.form['Strength']
+        dexterity =  request.form['Dexterity']
+        wisdom = request.form['Wisdom']
+        constitution = request.form['Constitution']
+        charisma = request.form['Charisma']
+    return render_template('add_character.html')
+
+@app.route('/add_campaign', methods=["GET", "POST"])
+def insert_campaign():
+    if request.method == "POST":
+        name = request.form['Name']
+        region = request.form['Region']
+        NPCS = request.form['NPCS']
+    return render_template('add_campaign.html')
 
 if __name__ == '__main__':
     app.run(debug=True)

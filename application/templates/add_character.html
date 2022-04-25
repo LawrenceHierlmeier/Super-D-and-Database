@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Insert Character</title>
+    <h1>Add A Character</h1>
+</head>
+<body>
+<form action="/insert_character" method="POST">
+    <p>Name <input type="text" name="Name" placeholder="Enter your character's name"/></p>
+    <p>Enter Ability Scores</p>
+    <p>Intelligence <input type="number" name="Intelligence" min="0" placeholder="Enter positive integer"/></p>
+    <p>Strength <input type="number" name="Strength" min="0" placeholder="Enter positive integer"/></p>
+    <p>Dexterity <input type="number" name="Dexterity" min="0" placeholder="Enter positive integer"/></p>
+    <p>Wisdom <input type="number" name="Wisdom" min="0" placeholder="Enter positive integer"/></p>
+    <p>Constitution <input type="number" name="Constitution" min="0" placeholder="Enter positive integer"/></p>
+    <p>Charisma <input type="number" name="Charisma" min="0" placeholder="Enter positive integer"/></p>
+    <p></p>
+    <p><input type="submit" value="Add"/></p>
+</form>
+<a href="{{ url_for('home') }}"><input type="button" value="Return to Home Page"></a>
+</body>
+</html>
