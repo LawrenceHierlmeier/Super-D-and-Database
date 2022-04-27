@@ -13,7 +13,6 @@
         {% endfor %}
     </select>
 </p>
-
 <p>Choose a Feat
     <select id="chosen_feat" name="feats" method="GET" action="/">
         <option hidden="">Choose Feat</option>
@@ -25,11 +24,13 @@
 </p>
 <p>
     <div style="background: lightgray;
-                font-size: 20px;
+                width: 50%;
+                height: 100px;
+                font-size: 15px;
                 padding: 10px;
                 border: 1px solid black;
                 margin: 10px;">
-    <p>Prerequisites: {{feat_prereq}}</p>
+    Prerequisites: {{feat_prereq}}
     <p>Description: {{feat_description}}</p>
     </div>
 </p>
