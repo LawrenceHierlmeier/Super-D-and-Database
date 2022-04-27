@@ -12,12 +12,12 @@ nav.Bar('top', [
     nav.Item('Home', 'home'),
     nav.Item('Characters', 'character_list'),
     nav.Item('Add Character', 'insert_character'),
-    nav.Item('Modify Character', ''),
-    nav.Item('Remove Character', ''),
+    #nav.Item('Modify Character', ''),
+    #nav.Item('Remove Character', ''),
     nav.Item('Add Campaign', 'insert_campaign'),
-    nav.Item('Remove Campaign', ''),
-    nav.Item('Add Feat to Character', 'character_feat'),
-    nav.Item('Remove Feat from Character', '')
+    #nav.Item('Remove Campaign', ''),
+    nav.Item('Add Feat to Character', 'character_feat')#,
+    #nav.Item('Remove Feat from Character', '')
 ])
 
 
@@ -46,10 +46,11 @@ def insert_character():
         name = request.form['Name']
         intelligence = request.form['Intelligence']
         strength = request.form['Strength']
-        dexterity =  request.form['Dexterity']
+        dexterity = request.form['Dexterity']
         wisdom = request.form['Wisdom']
         constitution = request.form['Constitution']
         charisma = request.form['Charisma']
+        print(name, intelligence, strength, dexterity, wisdom, constitution, charisma)
     return render_template('add_character.html')
 
 
