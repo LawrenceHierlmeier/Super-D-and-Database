@@ -12,7 +12,8 @@ nav.Bar('top', [
     nav.Item('Home', 'home'),
     nav.Item('Characters', 'character_list'),
     nav.Item('Add Character', 'insert_character'),
-    nav.Item('Add Campaign', 'insert_campaign')
+    nav.Item('Add Campaign', 'insert_campaign'),
+    nav.Item('Add Feat to Character', 'character_feat')
 ])
 
 
@@ -53,6 +54,21 @@ def insert_campaign():
         region = request.form['Region']
         NPCS = request.form['NPCS']
     return render_template('add_campaign.html')
+
+@app.route('/add_feat_to_character', methods=["GET", "POST"])
+def character_feat():
+    feat_attributes = {'Prereq': "",
+                       'Description': ""}
+    if request.method == "GET":
+        characters = ["Bob", "John", "Drax"]
+        feats = ["Strong", "Agile", "Quick"]
+    if request.method == "POST":
+        chosen_name = request.form['chosen_name']
+        chosen_feat = request.form['chosen_feat']
+        feat_attributes = {'Prereq': "Level 12",
+                           'Description': "Agile"}
+    return render_template('add_feat_to_character.html', characters=characters, feats=feats,
+                           feat_prereq=feat_attributes['Prereq'], feat_description=feat_attributes['Description'])
 
 if __name__ == '__main__':
     app.run(debug=True)

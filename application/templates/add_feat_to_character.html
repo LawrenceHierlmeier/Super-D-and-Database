@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Add Feat to Character</title>
+    <h1>Add A Feat to a Character</h1>
+</head>
+<body>
+<p>Choose a Character
+    <select id="chosen_name" name="characters" method="GET" action="/">
+        {% for char in characters %}
+            <option value="{{char}}">{{char}}</option>
+        {% endfor %}
+    </select>
+</p>
+
+<p>Choose a Feat
+    <select id="chosen_feat" name="feats" method="GET" action="/">
+        <option hidden="">Choose Feat</option>
+        {% for feat in feats %}
+            <option value="{{feat}}">{{feat}}</option>
+        {% endfor %}
+    </select>
+    <input type="submit" id="feat_details" value="View Feat Details" formmethod="POST">
+</p>
+<p>
+    <div style="background: lightgray;
+                font-size: 20px;
+                padding: 10px;
+                border: 1px solid black;
+                margin: 10px;">
+    <p>Prerequisites: {{feat_prereq}}</p>
+    <p>Description: {{feat_description}}</p>
+    </div>
+</p>
+</body>
+</html>
