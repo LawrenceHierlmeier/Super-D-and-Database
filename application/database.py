@@ -46,6 +46,7 @@ def get_character_info(name):
         cursor.close()
         return char_attributes
 
+
 def delete_character(name):
     with DatabaseConnection('CS2300Proj.db') as connection:
         cursor = connection.cursor()
