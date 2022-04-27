@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Add Campaign</title>
+    <h1>Add A Campaign</h1>
+</head>
+<body>
+<form action="" method="POST">
+    <p>Name <input type="text" name="Name" placeholder="Enter the campaign name"/></p>
+    <p>Region <input type="text" name="Region" placeholder="Enter the campaign region"/></p>
+    <p>Number of NPCS <input type="number" name="NPCS" min="0" placeholder="Enter the number of NPCS"</p>
+    <p></p>
+    <p><a href="{{ url_for('insert_campaign') }}"><input type = "submit" value="Add" formmethod="POST" /></a></p>
+</form>
+<a href="{{ url_for('home') }}"><input type="button" value="Return to Home Page"></a>
+</body>
+</html>
