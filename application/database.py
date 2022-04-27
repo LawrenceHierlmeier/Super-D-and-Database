@@ -7,7 +7,7 @@ def list_characters():
 
         cursor.execute(f"SELECT * FROM CHARACTER")
 
-        chars = [{'name': row[0], 'race': row[1], 'class': row[2]} for row in cursor.fetchall()]
+        chars = [{'name': row[0], 'race': row[7]} for row in cursor.fetchall()]
 
         return chars
 
@@ -28,12 +28,14 @@ def get_character_info(name):
     with DatabaseConnection('CS2300Proj.db') as connection:
         cursor = connection.cursor()
 
-        retrieve_query = "SELECT C.NAME, C.RACE_NAME, S.NAME, H.CLASS_NAME, C.CAMPAIGN_NAME, P.FEAT_NAME" \
-                         "       C.INTELLIGENCE, C.STRENGTH, C.DEXTERITY, C.WISDOM, C.CONSTITUTION, C. CHARISMA, " \
-                         "FROM CHARACTER AS C, POSSESSES AS P, HAS AS H, SUB_RACE AS S" \
-                         "WHERE (C.NAME = ? AND C.NAME = P.CHARACTER_NAME AND C.NAME = H.CHARACTER_NAME " \
-                         "       AND C.RACE_NAME = S.PRIMARY_RACE_NAME)"
-        cursor.execute(retrieve_query, name)
+        #retrieve_query = "SELECT C.NAME, C.RACE_NAME FROM CHARACTER AS C WHERE (C.NAME = ?)"
+
+        retrieve_query = "SELECT C.NAME, C.RACE_NAME, S.NAME, H.CLASS_NAME, C.CAMPAIGN_NAME, P.FEAT_NAME," \
+                         #"       C.INTELLIGENCE, C.STRENGTH, C.DEXTERITY, C.WISDOM, C.CONSTITUTION, C.CHARISMA " \
+                         #"FROM CHARACTER AS C, POSSESSES AS P, HAS AS H, SUB_RACE AS S " \
+                         #"WHERE C.NAME = ? AND C.NAME = P.CHARACTER_NAME AND C.NAME = H.CHARACTER_NAME " \
+                         #"       AND C.RACE_NAME = S.PRIMARY_RACE_NAME"
+        cursor.execute(retrieve_query, (name,))
 
         tuples = cursor.fetchall()
         cursor.close()

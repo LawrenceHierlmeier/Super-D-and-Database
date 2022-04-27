@@ -22,15 +22,17 @@ def home():
 @app.route('/characters')
 def character_list():
     chars = database.list_characters()
-    race_stats = []
+    print(chars[0]['name'])
+    character_tuple = database.get_character_info(chars[0]['name'])
+    #race_stats = []
 
-    for character in chars:
-        race_stats = database.get_race_attributes(chars[0]['race'])
+    #for character in chars:
+    #    race_stats = database.get_race_attributes(chars[0]['race'])
 
-    print(chars[0]['race'])
-    print(race_stats)
+    print(character_tuple)
+    #print(race_stats)
 
-    return render_template('character_list.html', chars=chars, race_stats=race_stats)
+    return render_template('character_list.html', chars=chars)
 
 
 if __name__ == '__main__':
