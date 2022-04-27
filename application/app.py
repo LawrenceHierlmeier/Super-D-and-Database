@@ -12,8 +12,12 @@ nav.Bar('top', [
     nav.Item('Home', 'home'),
     nav.Item('Characters', 'character_list'),
     nav.Item('Add Character', 'insert_character'),
+    nav.Item('Modify Character', ''),
+    nav.Item('Remove Character', ''),
     nav.Item('Add Campaign', 'insert_campaign'),
-    nav.Item('Add Feat to Character', 'character_feat')
+    nav.Item('Remove Campaign', ''),
+    nav.Item('Add Feat to Character', 'character_feat'),
+    nav.Item('Remove Feat from Character', '')
 ])
 
 
@@ -35,6 +39,7 @@ def character_list():
 
     return render_template('character_list.html', chars=chars, race_stats=race_stats)
 
+
 @app.route('/add_character', methods=["GET", "POST"])
 def insert_character():
     if request.method == "POST":
@@ -47,6 +52,7 @@ def insert_character():
         charisma = request.form['Charisma']
     return render_template('add_character.html')
 
+
 @app.route('/add_campaign', methods=["GET", "POST"])
 def insert_campaign():
     if request.method == "POST":
@@ -54,6 +60,7 @@ def insert_campaign():
         region = request.form['Region']
         NPCS = request.form['NPCS']
     return render_template('add_campaign.html')
+
 
 @app.route('/add_feat_to_character', methods=["GET", "POST"])
 def character_feat():
@@ -69,6 +76,7 @@ def character_feat():
                            'Description': "Agile"}
     return render_template('add_feat_to_character.html', characters=characters, feats=feats,
                            feat_prereq=feat_attributes['Prereq'], feat_description=feat_attributes['Description'])
+
 
 if __name__ == '__main__':
     app.run(debug=True)
