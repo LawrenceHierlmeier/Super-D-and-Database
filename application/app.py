@@ -91,6 +91,14 @@ def character_feat():
     return render_template('add_feat_to_character.html', characters=characters, feats=feats,
                            feat_prereq=feat_attributes['Prereq'], feat_description=feat_attributes['Description'])
 
+@app.route('/add_to_inventory', methods =["GET", "POST"])
+def insert_character_inventory():
+    if request.method == "POST":
+        character_name =  request.form['Character_Name']
+        item_name = request.form['Item_Name']
+        item_weight = request.form['Item_Weight']
+        database.add_item_to_inventory(item_name, item_weight, character_name)
+    return render_template('add_to_inventory')
 
 if __name__ == '__main__':
     app.run(debug=True)
