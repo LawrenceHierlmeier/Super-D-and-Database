@@ -8,7 +8,7 @@
 <body>
 <form action="" method="POST">
     <p>Choose a Character
-        <select name="chosen_name" name="characters" method="GET" action="/">
+        <select name="chosen_name" method="GET" action="/">
             <option hidden="">Choose Character</option>
             {% for char in characters %}
                 <option value="{{char}}">{{char}}</option>
@@ -16,13 +16,13 @@
         </select>
     </p>
     <p>Choose a Feat
-        <select name="chosen_feat" name="feats" method="GET" action="/">
+        <select name="chosen_feat" method="GET" action="/">
             <option hidden="">Choose Feat</option>
             {% for feat in feats %}
                 <option value="{{feat}}">{{feat}}</option>
             {% endfor %}
         </select>
-        <input type="submit" id="feat_details" value="View Feat Details"/>
+        <input type="submit" id="feat_details" value="View Feat Details" onsubmit=""/>
     </p>
     <p>
         <div style="background: lightgray;

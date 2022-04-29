@@ -55,8 +55,9 @@ def delete_character(name):
         cursor = connection.cursor()
 
         delete_query = "DELETE FROM CHARACTER " \
-                       "WHERE (NAME = ?)"
+                       "WHERE NAME = ?"
         cursor.execute(delete_query, (name,))
+
         return
 
 
@@ -70,8 +71,7 @@ def get_race_info():  # use to display all races information
         race_attributes = [{'name': row[0], 'feats': row[1], 'languages': row[2], 'proficiencies': row[3],
                             'AS_name': row[4], 'AS_inc_val': row[5], 'speed': row[6],
                             'size': row[7]} for row in cursor.fetchall()]
-        cursor.commit()
-        cursor.close()
+
         return race_attributes
 
 
@@ -85,8 +85,7 @@ def get_subrace_info(primary_race):  # use to display subrace info of primary ra
         cursor.execute(retrieve_query, (primary_race,))
         subrace_attributes = [{'name': row[0], 'proficiencies': row[1], 'AS_name': row[2], 'AS_inc_val': row[3],
                                'feats': row[4], 'primary_race_name': row[5]} for row in cursor.fetchall()]
-        cursor.commit()
-        cursor.close()
+
         return subrace_attributes
 
 
@@ -100,6 +99,7 @@ def get_class_info():  # use to display all classes information
         class_attributes = [{'name': row[0], 'hit_die': row[1], 'saving_throws': row[2], 'proficiencies': row[3],
                              'prof_bonus': row[4], 'feats': row[5], 'AS_name': row[6],
                              'AS_inc_val': row[7]} for row in cursor.fetchall()]
+
         return class_attributes
 
 
@@ -109,8 +109,7 @@ def add_feat_to_character(character_name, feat_name):
 
         insert_query = "INSERT INTO POSSESSES VALUES(?, ?)"
         cursor.execute(insert_query, (character_name, feat_name,))
-        cursor.commit()
-        cursor.close()
+
         return
 
 
@@ -130,11 +129,10 @@ def modify_character(old_name, new_name, intelligence, strength, dexterity, wisd
         update_query = "UPDATE CHARACTER " \
                        "SET NAME = ?, INTELLIGENCE = ?, STRENGTH = ?, DEXTERITY = ?, WISDOM = ?, CONSTITUTION = ?," \
                        "    CHARISMA = ?, RACE_NAME = ? " \
-                       "WHERE (NAME = ?)"
+                       "WHERE NAME = ?"
         cursor.execute(update_query, (new_name, intelligence, strength, dexterity,
                                       wisdom, constitution, charisma, race_name, old_name,))
-        cursor.commit()
-        cursor.close()
+
         return
 
 
@@ -143,10 +141,9 @@ def delete_campaign(campaign_name):
         cursor = connection.cursor()
 
         delete_query = "DELETE FROM CAMPAIGN " \
-                       "WHERE (NAME = ?)"
+                       "WHERE NAME = ?"
         cursor.execute(delete_query, (campaign_name,))
-        cursor.commit()
-        cursor.close()
+
         return
 
 
@@ -156,15 +153,14 @@ def remove_character_from_campaign(character_name, campaign_name):
         # set campaign_name in CHARACTER to 'None'
         update_query1 = "UPDATE CHARACTER " \
                         "SET CAMPAIGN_NAME = 'None' " \
-                        "WHERE (NAME = ? AND CAMPAIGN_NAME = ?)"
+                        "WHERE NAME = ? AND CAMPAIGN_NAME = ?"
         cursor.execute(update_query1, (character_name, campaign_name,))
         # decrement campaign player count
         update_query2 = "UPDATE CAMPAIGN " \
                         "SET NUM_PLAYERS = NUM_PLAYERS-1 " \
-                        "WHERE (NAME = ?)"
+                        "WHERE NAME = ?"
         cursor.execute(update_query2, (campaign_name,))
-        cursor.commit()
-        cursor.close()
+
         return
 
 
@@ -174,11 +170,10 @@ def num_items_in_inventory(character_name):
 
         retrieve_query = "SELECT COUNT(ITEM) " \
                          "FROM INVENTORY " \
-                         "WHERE (CHARACTER_NAME = ?)"
+                         "WHERE CHARACTER_NAME = ?"
         cursor.execute(retrieve_query, (character_name,))
         num = cursor.fetchone()
-        cursor.commit()
-        cursor.close()
+
         return num[0]
 
 
@@ -188,11 +183,10 @@ def inventory_weight(character_name):  # retrieves the weight of a character's i
 
         retrieve_query = "SELECT SUM(ITEM_WEIGHT) " \
                          "FROM INVENTORY AS I " \
-                         "WHERE (CHARACTER_NAME = ?)"
+                         "WHERE CHARACTER_NAME = ?"
         cursor.execute(retrieve_query, (character_name,))
         weight = cursor.fetchone()
-        cursor.commit()
-        cursor.close()
+
         return weight[0]
 
 
@@ -202,9 +196,9 @@ def add_item_to_inventory(item, item_weight, character_name):
         # get character strength score to calculate inventory weight capacity
         retrieve_query = "SELECT STRENGTH " \
                          "FROM CHARACTER " \
-                         "WHERE (NAME = ?)"
+                         "WHERE NAME = ?"
         cursor.execute(retrieve_query, (character_name,))
-        capacity = cursor.fetchall()
+        capacity = cursor.fetchone()
         # if adding item keeps weight below or at capacity
         if (inventory_weight(character_name) + item_weight <= capacity[0]):
             add_query = "INSERT INTO INVENTORY VALUES (?, ?, ?)"
@@ -212,8 +206,6 @@ def add_item_to_inventory(item, item_weight, character_name):
         else:  # over capacity
             print("Item is too heavy.")
 
-        cursor.commit()
-        cursor.close()
         return
 
 
@@ -221,13 +213,12 @@ def get_character_inventory(character_name):
     with DatabaseConnection('CS2300Proj.db') as connection:
         cursor = connection.cursor()
 
-        retrieve_query = "SELECT * " \
-                         "FROM INVENTORY AS I " \
-                         "WHERE (I.CHARACTER_NAME = ?)"
+        retrieve_query = "SELECT ITEM, ITEM_WEIGHT " \
+                         "FROM INVENTORY " \
+                         "WHERE CHARACTER_NAME = ?"
         cursor.execute(retrieve_query, (character_name,))
-        inventory = cursor.fetchall()
-        cursor.commit()
-        cursor.close()
+        inventory = [{'item': row[0], 'item_weight': row[1]} for row in cursor.fetchall()]
+
         return inventory
 
 
@@ -237,10 +228,9 @@ def add_character_to_campaign(campaign_name, character_name):
 
         update_query = "UPDATE CHARACTER " \
                        "SET CAMPAIGN_NAME = ? " \
-                       "WHERE (NAME = ?)"
+                       "WHERE NAME = ?"
         cursor.execute(update_query, (campaign_name, character_name,))
-        cursor.commit()
-        cursor.close()
+
         return
 
 
@@ -250,8 +240,7 @@ def add_campaign(name, region, num_npcs):
 
         insert_query = "INSERT INTO CAMPAIGN(NAME, REGION, NPCS) VALUES (?, ?, ?)"
         cursor.execute(insert_query, (name, region, num_npcs,))
-        cursor.commit()
-        cursor.close()
+
         return
 
 
@@ -272,12 +261,11 @@ def min_race_speed():
         # gets names of slowest races and respective speeds
         retrieve_query = "SELECT R1.NAME, R1.SPEED " \
                          "FROM RACE AS R1 " \
-                         "WHERE (R1.SPEED = (SELECT MIN(SPEED) " \
-                         "                  FROM RACE AS R2))"
+                         "WHERE R1.SPEED = (SELECT MIN(SPEED) " \
+                         "                  FROM RACE AS R2)"
         cursor.execute(retrieve_query)
         races = [{'name': row[0], 'speed': row[1]} for row in cursor.fetchall()]
-        cursor.commit()
-        cursor.close()
+
         return races
 
 
@@ -287,10 +275,9 @@ def max_race_speed():
         # gets names of fastest races and respective speeds
         retrieve_query = "SELECT R1.NAME, R1.SPEED " \
                          "FROM RACE AS R1 " \
-                         "WHERE (R1.SPEED = (SELECT MAX(SPEED) " \
-                         "                  FROM RACE AS R2))"
+                         "WHERE R1.SPEED = (SELECT MAX(SPEED) " \
+                         "                  FROM RACE AS R2)"
         cursor.execute(retrieve_query)
         races = [{'name': row[0], 'speed': row[1]} for row in cursor.fetchall()]
-        cursor.commit()
-        cursor.close()
+
         return races
