@@ -44,7 +44,6 @@ def character_list():
     print(character_tuple)
     #print(race_stats)
 
-    database.delete_character(chars[0]['name'])
     return render_template('character_list.html', chars=character_tuple)
 
 
