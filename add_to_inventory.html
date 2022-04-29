@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Insert Item into Character Inventory</title>
+    <h1>Add Item(s)</h1>
+</head>
+<body>
+<form action="" method="POST">
+    <p>Character <input type="text" name="Name" placeholder="Enter your character's name"/></p>
+    <p>Enter Item's Weight/Name</p>
+    <p>Item Name <input type= "text" item_name="Item_Name" placeholder="Enter the Item's name"> </p>
+    <p>Item Weight <input type= "number" item_weight= "Item_Weight" min="0" placeholder="Enter a positive integer"> </p>
+    <p><a href="{{ url_for('insert_character_inventory') }}"><input type="submit" value="Add" formmethod="POST"/></a></p>
+</form>
+<a href="{{ url_for('home') }}"><input type="button" value="Return to Home Page"></a>
+</body>
+</html>
