@@ -13,9 +13,8 @@ nav.Bar('top', [
     nav.Item('Characters', 'character_list'),
     nav.Item('Add Character', 'insert_character'),
     #nav.Item('Modify Character', ''),
-    #nav.Item('Remove Character', ''),
     nav.Item('Add Campaign', 'insert_campaign'),
-    #nav.Item('Remove Campaign', ''),
+    nav.Item('Edit Campaign', 'edit_campaign'),
     nav.Item('Add Feat to Character', 'character_feat')#,
     #nav.Item('Remove Feat from Character', '')
 ])
@@ -75,6 +74,24 @@ def insert_campaign():
         NPCS = request.form['NPCS']
     return render_template('add_campaign.html')
 
+@app.route('/edit_campaign', methods=['GET', 'POST'])
+def edit_campaign():
+    #campaigns = database.get_campaign_names() #get list of campaign names
+    campaigns = ['random1', 'random2', 'random3']
+    if request.method == "POST":
+        if request.form['submit'] == 'Delete Campaign':
+            campaign_to_delete = request.form['old_name']
+            print("campaign deleted")
+            #database.delete_campaign(campaign_to_delete)
+        elif request.form['submit'] == 'Update':
+            old_name = request.form['old_name']
+            new_name = request.form['new_name']
+            region = request.form['region']
+            num_npcs = request.form['num_npcs']
+            #database.modify_campaign(new_name, region, num_npcs, old_name)
+            print(old_name, new_name, region, num_npcs)
+    return render_template('edit_campaign.html', campaigns=campaigns)
+
 
 @app.route('/add_feat_to_character', methods=["GET", "POST"])
 def character_feat():
@@ -86,6 +103,8 @@ def character_feat():
     if request.method == "POST":
         chosen_name = request.form['chosen_name']
         chosen_feat = request.form['chosen_feat']
+        print(chosen_name, chosen_feat)
+        #database.add_feat_to_character(chosen_name, chosen_feat)
         feat_attributes = {'Prereq': "Level 12",
                            'Description': "Agile"}
     return render_template('add_feat_to_character.html', characters=characters, feats=feats,
@@ -94,7 +113,7 @@ def character_feat():
 @app.route('/add_to_inventory', methods =["GET", "POST"])
 def insert_character_inventory():
     if request.method == "POST":
-        character_name =  request.form['Character_Name']
+        character_name = request.form['Character_Name']
         item_name = request.form['Item_Name']
         item_weight = request.form['Item_Weight']
         database.add_item_to_inventory(item_name, item_weight, character_name)

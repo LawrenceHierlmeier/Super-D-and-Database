@@ -244,6 +244,28 @@ def add_campaign(name, region, num_npcs):
         return
 
 
+def get_campaign_names():
+    with DatabaseConnection('CS2300Proj.db') as connection:
+        cursor = connection.cursor()
+
+        retrieve_query = "SELECT NAME" \
+                         "FROM CAMPAIGN"
+        cursor.execute(retrieve_query)
+        campaign_tuples = cursor.fetchall()
+        campaigns = [row[0] for row in campaign_tuples]
+        return campaigns #list of campaign names is returned
+
+
+def modify_campaign(old_name, new_name, region, num_npcs):
+    with DatabaseConnection('CS2300Proj.db') as connection:
+        cursor = connection.cursor()
+
+        update_query = "UPDATE CAMPAIGN " \
+                       "SET NAME = ?, REGION = ?, NPCS = ? " \
+                       "WHERE NAME = ?"
+        cursor.execute(update_query, (new_name, region, num_npcs, old_name,))
+
+
 def add_character(name, intelligence, strength, dexterity, wisdom, constitution, charisma, race_name, campaign_name):
     with DatabaseConnection('CS2300Proj.db') as connection:
         cursor = connection.cursor()
