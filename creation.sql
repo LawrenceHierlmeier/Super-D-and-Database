@@ -111,7 +111,7 @@ CREATE TABLE POSSESSES ( /*POSSESSES relation between CHARACTER and FEATS*/
     FOREIGN KEY (CHARACTER_NAME) REFERENCES CHARACTER(NAME)
         ON DELETE CASCADE    /*if character is deleted, delete all POSSESSES tuples with that character name*/
         ON UPDATE CASCADE,    /*if character name is updated, update all POSSESSES tuples with that character name*/
-    FOREIGN KEY (FEAT_NAME) REFERENCES FEAT(NAME)
+    FOREIGN KEY (FEAT_NAME) REFERENCES FEATS(NAME)
         ON DELETE CASCADE    /*if feat is deleted, delete all POSSESSES tuples with that feat name*/
         ON UPDATE CASCADE    /*if feat name is updated, update all POSSESSES tuples with that feat name*/
     );

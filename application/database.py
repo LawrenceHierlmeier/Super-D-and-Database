@@ -64,7 +64,7 @@ def get_race_info():  # use to display all races information
     with DatabaseConnection('CS2300Proj.db') as connection:
         cursor = connection.cursor()
 
-        retrieve_query = "SELECT *" \
+        retrieve_query = "SELECT * " \
                          "FROM RACE"
         cursor.execute(retrieve_query)
         race_attributes = [{'name': row[0], 'feats': row[1], 'languages': row[2], 'proficiencies': row[3],
@@ -79,8 +79,8 @@ def get_subrace_info(primary_race):  # use to display subrace info of primary ra
     with DatabaseConnection('CS2300Proj.db') as connection:
         cursor = connection.cursor()
 
-        retrieve_query = "SELECT *" \
-                         "FROM SUB_RACE" \
+        retrieve_query = "SELECT * " \
+                         "FROM SUB_RACE " \
                          "WHERE PRIMARY_RACE_NAME = ?"
         cursor.execute(retrieve_query, (primary_race,))
         subrace_attributes = [{'name': row[0], 'proficiencies': row[1], 'AS_name': row[2], 'AS_inc_val': row[3],
@@ -94,7 +94,7 @@ def get_class_info():  # use to display all classes information
     with DatabaseConnection('CS2300Proj.db') as connection:
         cursor = connection.cursor()
 
-        retrieve_query = "SELECT *" \
+        retrieve_query = "SELECT * " \
                          "FROM CLASS"
         cursor.execute(retrieve_query)
         class_attributes = [{'name': row[0], 'hit_die': row[1], 'saving_throws': row[2], 'proficiencies': row[3],
@@ -127,9 +127,9 @@ def modify_character(old_name, new_name, intelligence, strength, dexterity, wisd
     with DatabaseConnection('CS2300Proj.db') as connection:
         cursor = connection.cursor()
 
-        update_query = "UPDATE CHARACTER" \
+        update_query = "UPDATE CHARACTER " \
                        "SET NAME = ?, INTELLIGENCE = ?, STRENGTH = ?, DEXTERITY = ?, WISDOM = ?, CONSTITUTION = ?," \
-                       "    CHARISMA = ?, RACE_NAME = ?" \
+                       "    CHARISMA = ?, RACE_NAME = ? " \
                        "WHERE (NAME = ?)"
         cursor.execute(update_query, (new_name, intelligence, strength, dexterity,
                                       wisdom, constitution, charisma, race_name, old_name,))
@@ -142,7 +142,7 @@ def delete_campaign(campaign_name):
     with DatabaseConnection('CS2300Proj.db') as connection:
         cursor = connection.cursor()
 
-        delete_query = "DELETE FROM CAMPAIGN" \
+        delete_query = "DELETE FROM CAMPAIGN " \
                        "WHERE (NAME = ?)"
         cursor.execute(delete_query, (campaign_name,))
         cursor.commit()
@@ -154,13 +154,13 @@ def remove_character_from_campaign(character_name, campaign_name):
     with DatabaseConnection('CS2300Proj.db') as connection:
         cursor = connection.cursor()
         # set campaign_name in CHARACTER to 'None'
-        update_query1 = "UPDATE CHARACTER" \
-                        "SET CAMPAIGN_NAME = 'None'" \
+        update_query1 = "UPDATE CHARACTER " \
+                        "SET CAMPAIGN_NAME = 'None' " \
                         "WHERE (NAME = ? AND CAMPAIGN_NAME = ?)"
         cursor.execute(update_query1, (character_name, campaign_name,))
         # decrement campaign player count
-        update_query2 = "UPDATE CAMPAIGN" \
-                        "SET NUM_PLAYERS = NUM_PLAYERS-1" \
+        update_query2 = "UPDATE CAMPAIGN " \
+                        "SET NUM_PLAYERS = NUM_PLAYERS-1 " \
                         "WHERE (NAME = ?)"
         cursor.execute(update_query2, (campaign_name,))
         cursor.commit()
@@ -172,8 +172,8 @@ def num_items_in_inventory(character_name):
     with DatabaseConnection('CS2300Proj.db') as connection:
         cursor = connection.cursor()
 
-        retrieve_query = "SELECT COUNT(ITEM)" \
-                         "FROM INVENTORY" \
+        retrieve_query = "SELECT COUNT(ITEM) " \
+                         "FROM INVENTORY " \
                          "WHERE (CHARACTER_NAME = ?)"
         cursor.execute(retrieve_query, (character_name,))
         num = cursor.fetchone()
@@ -186,8 +186,8 @@ def inventory_weight(character_name):  # retrieves the weight of a character's i
     with DatabaseConnection('CS2300Proj.db') as connection:
         cursor = connection.cursor()
 
-        retrieve_query = "SELECT SUM(ITEM_WEIGHT)" \
-                         "FROM INVENTORY AS I" \
+        retrieve_query = "SELECT SUM(ITEM_WEIGHT) " \
+                         "FROM INVENTORY AS I " \
                          "WHERE (CHARACTER_NAME = ?)"
         cursor.execute(retrieve_query, (character_name,))
         weight = cursor.fetchone()
@@ -200,8 +200,8 @@ def add_item_to_inventory(item, item_weight, character_name):
     with DatabaseConnection('CS2300Proj.db') as connection:
         cursor = connection.cursor()
         # get character strength score to calculate inventory weight capacity
-        retrieve_query = "SELECT STRENGTH" \
-                         "FROM CHARACTER" \
+        retrieve_query = "SELECT STRENGTH " \
+                         "FROM CHARACTER " \
                          "WHERE (NAME = ?)"
         cursor.execute(retrieve_query, (character_name,))
         capacity = cursor.fetchall()
@@ -221,8 +221,8 @@ def get_character_inventory(character_name):
     with DatabaseConnection('CS2300Proj.db') as connection:
         cursor = connection.cursor()
 
-        retrieve_query = "SELECT *" \
-                         "FROM INVENTORY AS I" \
+        retrieve_query = "SELECT * " \
+                         "FROM INVENTORY AS I " \
                          "WHERE (I.CHARACTER_NAME = ?)"
         cursor.execute(retrieve_query, (character_name,))
         inventory = cursor.fetchall()
@@ -235,8 +235,8 @@ def add_character_to_campaign(campaign_name, character_name):
     with DatabaseConnection('CS2300Proj.db') as connection:
         cursor = connection.cursor()
 
-        update_query = "UPDATE CHARACTER" \
-                       "SET CAMPAIGN_NAME = ?" \
+        update_query = "UPDATE CHARACTER " \
+                       "SET CAMPAIGN_NAME = ? " \
                        "WHERE (NAME = ?)"
         cursor.execute(update_query, (campaign_name, character_name,))
         cursor.commit()
@@ -270,9 +270,9 @@ def min_race_speed():
     with DatabaseConnection('CS2300Proj.db') as connection:
         cursor = connection.cursor()
         # gets names of slowest races and respective speeds
-        retrieve_query = "SELECT R1.NAME, R1.SPEED" \
-                         "FROM RACE AS R1" \
-                         "WHERE (R1.SPEED = (SELECT MIN(SPEED)" \
+        retrieve_query = "SELECT R1.NAME, R1.SPEED " \
+                         "FROM RACE AS R1 " \
+                         "WHERE (R1.SPEED = (SELECT MIN(SPEED) " \
                          "                  FROM RACE AS R2))"
         cursor.execute(retrieve_query)
         races = [{'name': row[0], 'speed': row[1]} for row in cursor.fetchall()]
@@ -285,9 +285,9 @@ def max_race_speed():
     with DatabaseConnection('CS2300Proj.db') as connection:
         cursor = connection.cursor()
         # gets names of fastest races and respective speeds
-        retrieve_query = "SELECT R1.NAME, R1.SPEED" \
-                         "FROM RACE AS R1" \
-                         "WHERE (R1.SPEED = (SELECT MAX(SPEED)" \
+        retrieve_query = "SELECT R1.NAME, R1.SPEED " \
+                         "FROM RACE AS R1 " \
+                         "WHERE (R1.SPEED = (SELECT MAX(SPEED) " \
                          "                  FROM RACE AS R2))"
         cursor.execute(retrieve_query)
         races = [{'name': row[0], 'speed': row[1]} for row in cursor.fetchall()]
