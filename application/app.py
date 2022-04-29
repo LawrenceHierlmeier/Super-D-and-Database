@@ -81,9 +81,9 @@ def insert_campaign():
 def character_feat():
     feat_attributes = {'Prereq': "",
                        'Description': ""}
-    if request.method == "GET":
-        characters = ["Bob", "John", "Drax"]
-        feats = ["Strong", "Agile", "Quick"]
+    characters = ["Bob", "John", "Drax"]
+    feats = ["Strong", "Agile", "Quick"]
+
     if request.method == "POST":
         chosen_name = request.form['chosen_name']
         chosen_feat = request.form['chosen_feat']

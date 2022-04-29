@@ -95,6 +95,7 @@ CREATE TABLE INVENTORY (
 CREATE TABLE HAS ( /*HAS relation between CHARACTER and CLASS*/
     CLASS_NAME    VARCHAR(30)    NOT NULL,
     CHARACTER_NAME    VARCHAR(30)    NOT NULL,
+    PRIMARY KEY (CLASS_NAME, CHARACTER_NAME),
     FOREIGN KEY (CLASS_NAME) REFERENCES CLASS(NAME)
         ON DELETE CASCADE    /*if class is deleted, delete all HAS tuples with that class name*/
         ON UPDATE CASCADE,    /*if class name is updated, update all HAS tuples with that class name*/
@@ -106,6 +107,7 @@ CREATE TABLE HAS ( /*HAS relation between CHARACTER and CLASS*/
 CREATE TABLE POSSESSES ( /*POSSESSES relation between CHARACTER and FEATS*/
     CHARACTER_NAME    VARCHAR(30)    NOT NULL,
     FEAT_NAME    VARCHAR(30)    NOT NULL,
+    PRIMARY KEY (CHARACTER_NAME, FEAT_NAME),
     FOREIGN KEY (CHARACTER_NAME) REFERENCES CHARACTER(NAME)
         ON DELETE CASCADE    /*if character is deleted, delete all POSSESSES tuples with that character name*/
         ON UPDATE CASCADE,    /*if character name is updated, update all POSSESSES tuples with that character name*/

@@ -6,26 +6,29 @@
     <h1>Add A Feat to a Character</h1>
 </head>
 <body>
-<form action="/character_feat" method="POST">
+<form action="" method="POST">
     <p>Choose a Character
-        <select id="chosen_name" name="characters" method="GET" action="/">
+        <select name="chosen_name" name="characters" method="GET" action="/">
+            <option hidden="">Choose Character</option>
             {% for char in characters %}
                 <option value="{{char}}">{{char}}</option>
             {% endfor %}
         </select>
     </p>
     <p>Choose a Feat
-        <select id="chosen_feat" name="feats" method="GET" action="/">
+        <select name="chosen_feat" name="feats" method="GET" action="/">
             <option hidden="">Choose Feat</option>
             {% for feat in feats %}
                 <option value="{{feat}}">{{feat}}</option>
             {% endfor %}
         </select>
-        <button type="submit" id="feat_details" value="View Feat Details"></button>
+        <input type="submit" id="feat_details" value="View Feat Details"/>
     </p>
     <p>
         <div style="background: lightgray;
-                    width: 50%;
+                    word-wrap: normal;
+                    hyphens: auto;
+                    width: 25%;
                     height: 100px;
                     font-size: 15px;
                     padding: 10px;
