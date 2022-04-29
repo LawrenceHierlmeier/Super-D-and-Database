@@ -15,7 +15,32 @@
     <p>Wisdom <input type="number" name="Wisdom" min="0" placeholder="Enter positive integer"/></p>
     <p>Constitution <input type="number" name="Constitution" min="0" placeholder="Enter positive integer"/></p>
     <p>Charisma <input type="number" name="Charisma" min="0" placeholder="Enter positive integer"/></p>
+    <p>Race <select name="Race">
+        <option value="Dwarf">Dwarf</option>
+        <option value="Elf">Elf</option>
+        <option value="Halfing">Halfing</option>
+        <option value="Human">Human</option>
+        <option value="Dragonborn">Dragonborn</option>
+        <option value="Gnome">Gnome</option>
+        <option value="Half-Elf">Half-Elf</option>
+        <option value="Half-Orc">Half-Orc</option>
+        <option value="Tiefling">Tiefling</option>
+    </select></p>
     <p></p>
+    <p>Class <select name="Class">
+        <option value="Barbarian">Barbarian</option>
+        <option value="Bard">Bard</option>
+        <option value="Cleric">Cleric</option>
+        <option value="Druid">Druid</option>
+        <option value="Fighter">Fighter</option>
+        <option value="Monk">Monk</option>
+        <option value="Paladin">Paladin</option>
+        <option value="Ranger">Ranger</option>
+        <option value="Rogue">Rogue</option>
+        <option value="Sorcerer">Sorcerer</option>
+        <option value="Warlock">Warlock</option>
+        <option value="Wizard">Wizard</option>
+    </select></p>
     <p><a href="{{ url_for('insert_character') }}"><input type="submit" value="Add" formmethod="POST"/></a></p>
 </form>
 <a href="{{ url_for('home') }}"><input type="button" value="Return to Home Page"></a>

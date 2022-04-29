@@ -29,8 +29,13 @@ def home():
 @app.route('/characters')
 def character_list():
     chars = database.list_characters()
-    print(chars[0]['name'])
-    character_tuple = database.get_character_info(chars[0]['name'])
+    print(chars)
+    print(len(chars))
+
+    character_tuple = []
+
+    for i in range(len(chars)):
+        character_tuple.append(database.get_character_info(chars[i]['name']))
     #race_stats = []
 
     #for character in chars:
@@ -39,7 +44,8 @@ def character_list():
     print(character_tuple)
     #print(race_stats)
 
-    return render_template('character_list.html', chars=chars)
+    database.delete_character(chars[0]['name'])
+    return render_template('character_list.html', chars=character_tuple)
 
 
 @app.route('/add_character', methods=["GET", "POST"])
@@ -52,7 +58,13 @@ def insert_character():
         wisdom = request.form['Wisdom']
         constitution = request.form['Constitution']
         charisma = request.form['Charisma']
-        print(name, intelligence, strength, dexterity, wisdom, constitution, charisma)
+        race = request.form['Race']
+        character_class = request.form['Class']
+        campaign_name = 'None'
+        print(name, intelligence, strength, dexterity, wisdom, constitution, charisma, race, character_class)
+        database.add_character(name, intelligence, strength, dexterity, wisdom, constitution, charisma, race, campaign_name)
+        print(name, character_class)
+        database.add_class_to_character(name, character_class)
     return render_template('add_character.html')
 
 
