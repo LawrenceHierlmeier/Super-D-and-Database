@@ -48,6 +48,9 @@ def character_list():
 
 @app.route('/add_character', methods=["GET", "POST"])
 def insert_character():
+    #get names of fastest and slowest race
+    #fastest_race = database.max_race_speed()
+    #slowest_race = database.min_race_speed()
     if request.method == "POST":
         name = request.form['Name']
         intelligence = request.form['Intelligence']
