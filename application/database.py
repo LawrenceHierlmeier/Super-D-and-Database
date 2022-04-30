@@ -141,6 +141,31 @@ def get_class_info(class_name):  # use to display all classes information
         return class_attributes
 
 
+def list_feats():
+    with DatabaseConnection('CS2300Proj.db') as connection:
+        cursor = connection.cursor()
+
+        retrieve_query = "SELECT NAME " \
+                         "FROM FEATS"
+        cursor.execute(retrieve_query)
+
+        feats = [{'name': row[0]} for row in cursor.fetchall()]
+
+        return feats
+
+def get_feat_info(feat_name):
+    with DatabaseConnection('CS2300Proj.db') as connection:
+        cursor = connection.cursor()
+
+        retrieve_query = "SELECT * " \
+                         "FROM FEATS " \
+                         "WHERE NAME = ?"
+        cursor.execute(retrieve_query, (feat_name,))
+        feat_attributes = [{'name': row[0], 'prerequisites': row[1], 'description': row[2]} for row in cursor.fetchall()]
+
+        return feat_attributes
+
+
 def add_feat_to_character(character_name, feat_name):
     with DatabaseConnection('CS2300Proj.db') as connection:
         cursor = connection.cursor()
@@ -264,10 +289,15 @@ def add_character_to_campaign(campaign_name, character_name):
     with DatabaseConnection('CS2300Proj.db') as connection:
         cursor = connection.cursor()
 
-        update_query = "UPDATE CHARACTER " \
+        update_query1 = "UPDATE CHARACTER " \
                        "SET CAMPAIGN_NAME = ? " \
                        "WHERE NAME = ?"
-        cursor.execute(update_query, (campaign_name, character_name,))
+        cursor.execute(update_query1, (campaign_name, character_name,))
+        #increment number of players count in specific campaign tuple
+        update_query2 = "UPDATE CAMPAIGN " \
+                        "SET NUM_PLAYERS = NUM_PLAYERS+1 " \
+                        "WHERE NAME = ?"
+        cursor.execute(update_query2, (campaign_name,))
 
         return
 
@@ -282,16 +312,31 @@ def add_campaign(name, region, num_npcs):
         return
 
 
-def get_campaign_names():
+def list_campaigns():
     with DatabaseConnection('CS2300Proj.db') as connection:
         cursor = connection.cursor()
 
-        retrieve_query = "SELECT NAME" \
+        retrieve_query = "SELECT NAME " \
                          "FROM CAMPAIGN"
         cursor.execute(retrieve_query)
-        campaign_tuples = cursor.fetchall()
-        campaigns = [row[0] for row in campaign_tuples]
-        return campaigns #list of campaign names is returned
+
+        campaigns = [{'name': row[0]} for row in cursor.fetchall()]
+
+        return campaigns
+
+
+def get_campaign_info(campaign_name):
+    with DatabaseConnection('CS2300Proj.db') as connection:
+        cursor = connection.cursor()
+
+        retrieve_query = "SELECT * " \
+                         "FROM CAMPAIGN " \
+                         "WHERE NAME = ?"
+        cursor.execute(retrieve_query, (campaign_name,))
+        campaign_attributes = [{'name': row[0], 'region': row[1], 'num_players': row[2],
+                                'NPCS': row[3]} for row in cursor.fetchall()]
+
+        return campaign_attributes
 
 
 def modify_campaign(old_name, new_name, region, num_npcs):

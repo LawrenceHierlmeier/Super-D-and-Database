@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8" name="viewport" content="width=device-width, initial-scale=1">
-    <title>Classes</title>
+    <title>Character Feats</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/character_list.css') }}">
 </head>
 <body>
@@ -13,19 +13,16 @@
     </li>
     {% endfor %}
 
-    <h2> Classes </h2>
+    <h2> Campaigns </h2>
 
     <div class="row">
-        {% for item in classes %}
+        {% for item in campaigns %}
         <div class="column">
             <div class="card">
                 <h3>{{ item[0].name }}</h3>
-                <p> Hit Die: {{ item[0].hit_die }}</p>
-                <p> Saving Throws: {{ item[0].saving_throws }}</p>
-                <p> Proficiencies: {{ item[0].proficiencies }}</p>
-                <p> Proficiency Bonus: {{ item[0].prof_bonus }}</p>
-                <p> Feats: {{ item[0].feats }}</p>
-                <p> Ability Score Increase: {{ item[0].AS_name }} +{{ item[0].AS_inc_val }}</p>
+                <p> Region: {{ item[0].region }}</p>
+                <p> Number of Players: {{ item[0].num_players }}</p>
+                <p> Number of NPCs: {{ item[0].NPCS }}</p>
             </div>
         </div>
         {% endfor %}

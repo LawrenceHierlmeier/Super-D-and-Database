@@ -11,10 +11,10 @@ nav = Navigation(app)
 nav.Bar('top', [
     nav.Item('Home', 'home'),
     nav.Item('Characters', 'character_list'),
-    #nav.Item('Campaigns', ''),
+    nav.Item('Campaigns', 'campaign_list'),
     nav.Item('Races', 'race_list'),
     nav.Item('Classes', 'class_list'),
-    #nav.Item('Feats', ''),
+    nav.Item('Feats', 'feat_list'),
     nav.Item('Add Character', 'insert_character'),
     #nav.Item('Modify Character', ''),
     nav.Item('Add Campaign', 'insert_campaign'),
@@ -188,6 +188,38 @@ def subrace_list():
     print("on sub races page", selected_primary_race)
 
     return render_template("subrace_list.html", subraces=subrace_tuple, primary_race=selected_primary_race)
+
+
+@app.route('/feat_list', methods=["GET", "POST"])
+def feat_list():
+    feats = database.list_feats()
+    print(feats)
+    print(len(feats))
+
+    feat_tuple = []
+
+    for i in range(len(feats)):
+        feat_tuple.append(database.get_feat_info(feats[i]['name']))
+
+    print(feat_tuple)
+    return render_template("feat_list.html", feats=feat_tuple)
+
+
+@app.route('/campaign_list', methods=["GET", "POST"])
+def campaign_list():
+    campaigns = database.list_campaigns()
+    print(campaigns)
+    print(len(campaigns))
+
+    campaign_tuple = []
+
+    for i in range(len(campaigns)):
+        if (campaigns[i]['name'] != "None"):
+            campaign_tuple.append(database.get_campaign_info(campaigns[i]['name']))
+
+    print(campaign_tuple)
+    return render_template("campaign_list.html", campaigns=campaign_tuple)
+
 
 if __name__ == '__main__':
     app.run(debug=True)
