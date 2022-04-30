@@ -14,6 +14,7 @@ nav.Bar('top', [
     nav.Item('Add Character', 'insert_character'),
     #nav.Item('Modify Character', ''),
     nav.Item('Add Campaign', 'insert_campaign'),
+    nav.Item('Add Character to Campaign', 'add_char_to_campaign'),
     nav.Item('Edit Campaign', 'edit_campaign'),
     nav.Item('Add Feat to Character', 'character_feat')#,
     #nav.Item('Remove Feat from Character', '')
@@ -120,7 +121,20 @@ def insert_character_inventory():
         item_name = request.form['Item_Name']
         item_weight = request.form['Item_Weight']
         database.add_item_to_inventory(item_name, item_weight, character_name)
-    return render_template('add_to_inventory')
+    return render_template('add_to_inventory.html')
+
+@app.route('/add_char_to_campaign', methods=["GET", "POST"])
+def add_char_to_campaign():
+    #characters = database.list_characters()
+    characters = ["bob", "john", "bill"]
+    #campaigns = database.get_campaign_names()
+    campaigns = ["camp1", "camp2", "camp3"]
+    if request.method == "POST":
+        character_name = request.form['chosen_name']
+        campaign_name = request.form['chosen_campaign']
+        #database.add_character_to_campaign(campaign_name, character_name)
+        print(character_name, campaign_name)
+    return render_template('add_char_to_campaign.html', characters=characters, campaigns=campaigns)
 
 if __name__ == '__main__':
     app.run(debug=True)

@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Add a Character to a Campaign</title>
+    <h1>Add a Character to a Campaign</h1>
+</head>
+<body>
+<form action="" method="POST">
+    <p> Character
+        <select name="chosen_name" method="GET" action="/">
+            {% for char in characters %}
+                <option value="{{char}}">{{char}}</option>
+            {% endfor %}
+        </select>
+    </p>
+    <p> Campaign
+        <select name="chosen_campaign" method="GET" action="/">
+            {% for camp in campaigns %}
+                <option value="{{camp}}">{{camp}}</option>
+            {% endfor %}
+        </select>
+        *Select 'None' to remove character from a campaign.
+    </p>
+    <p><a href="{{ url_for('add_char_to_campaign') }}"><input type="submit" value="Add" formmethod="POST"/></a></p>
+</form>
+</body>
+</html>
