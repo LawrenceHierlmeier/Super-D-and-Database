@@ -13,18 +13,16 @@
     </li>
     {% endfor %}
 
+    <h2> {{ primary_race }} Subraces</h2>
+
     <div class="row">
-        {% for item in races %}
+        {% for item in subraces %}
         <div class="column">
             <div class="card">
                 <h3>{{ item[0].name }}</h3>
-                <p> Feats: {{ item[0].feats }}</p>
-                <p> Languages: {{ item[0].languages }}</p>
                 <p> Proficiencies: {{ item[0].proficiencies }}</p>
                 <p> Ability Score Increase: {{ item[0].AS_name }} +{{ item[0].AS_inc_val }}</p>
-                <p> Speed: {{ item[0].speed }}</p>
-                <p> Size: {{ item[0].size }}</p>
-                <a href="{{url_for('subrace_list', type=item[0].name)}}">View Subraces</a>
+                <p> Feats: {{ item[0].feats }}</p>
             </div>
         </div>
         {% endfor %}

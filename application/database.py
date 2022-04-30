@@ -86,15 +86,27 @@ def get_race_info(race_name):  # use to display all races information
 
         return race_attributes
 
+def list_subraces(primary_race):
+    with DatabaseConnection('CS2300Proj.db') as connection:
+        cursor = connection.cursor()
 
-def get_subrace_info(primary_race):  # use to display subrace info of primary race
+        retrieve_query = "SELECT NAME " \
+                         "FROM SUB_RACE " \
+                         "WHERE PRIMARY_RACE_NAME = ?"
+        cursor.execute(retrieve_query, (primary_race,))
+
+        subraces = [{'name': row[0]} for row in cursor.fetchall()]
+
+        return subraces
+
+def get_subrace_info(subrace_name):  # use to display subrace info of primary race
     with DatabaseConnection('CS2300Proj.db') as connection:
         cursor = connection.cursor()
 
         retrieve_query = "SELECT * " \
                          "FROM SUB_RACE " \
-                         "WHERE PRIMARY_RACE_NAME = ?"
-        cursor.execute(retrieve_query, (primary_race,))
+                         "WHERE NAME = ?"
+        cursor.execute(retrieve_query, (subrace_name,))
         subrace_attributes = [{'name': row[0], 'proficiencies': row[1], 'AS_name': row[2], 'AS_inc_val': row[3],
                                'feats': row[4], 'primary_race_name': row[5]} for row in cursor.fetchall()]
 

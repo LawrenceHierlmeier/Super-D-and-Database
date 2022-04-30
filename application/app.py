@@ -171,6 +171,23 @@ def race_list():
     print(race_tuple)
     return render_template("race_list.html", races=race_tuple)
 
+@app.route('/race_list/subrace', methods=["GET", "POST"])
+def subrace_list():
+    selected_primary_race = request.args.get('type')
+
+    subraces = database.list_subraces(selected_primary_race)
+    print(subraces)
+    print(len(subraces))
+
+    subrace_tuple = []
+
+    for i in range(len(subraces)):
+        subrace_tuple.append(database.get_subrace_info(subraces[i]['name']))
+    print(subrace_tuple)
+
+    print("on sub races page", selected_primary_race)
+
+    return render_template("subrace_list.html", subraces=subrace_tuple, primary_race=selected_primary_race)
 
 if __name__ == '__main__':
     app.run(debug=True)
