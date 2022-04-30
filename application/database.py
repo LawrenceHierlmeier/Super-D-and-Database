@@ -89,13 +89,27 @@ def get_subrace_info(primary_race):  # use to display subrace info of primary ra
         return subrace_attributes
 
 
-def get_class_info():  # use to display all classes information
+def list_classes():
+    with DatabaseConnection('CS2300Proj.db') as connection:
+        cursor = connection.cursor()
+
+        retrieve_query = "SELECT NAME " \
+                         "FROM CLASS"
+        cursor.execute(retrieve_query)
+
+        classes = [{'name': row[0]} for row in cursor.fetchall()]
+
+        return classes
+
+
+def get_class_info(class_name):  # use to display all classes information
     with DatabaseConnection('CS2300Proj.db') as connection:
         cursor = connection.cursor()
 
         retrieve_query = "SELECT * " \
-                         "FROM CLASS"
-        cursor.execute(retrieve_query)
+                         "FROM CLASS " \
+                         "WHERE NAME = ?"
+        cursor.execute(retrieve_query, (class_name,))
         class_attributes = [{'name': row[0], 'hit_die': row[1], 'saving_throws': row[2], 'proficiencies': row[3],
                              'prof_bonus': row[4], 'feats': row[5], 'AS_name': row[6],
                              'AS_inc_val': row[7]} for row in cursor.fetchall()]
