@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" name="viewport" content="width=device-width, initial-scale=1">
+    <title>Races</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/character_list.css') }}">
+</head>
+<body>
+<ul>
+    {% for item in nav.top %}
+    <li class="{{ 'active' if item.is_active else '' }}">
+        <a href="{{ item.url }}">{{ item.label }}</a>
+    </li>
+    {% endfor %}
+
+    <div class="row">
+        {% for item in races %}
+        <div class="column">
+            <div class="card">
+                <h3>{{ item[0].name }}</h3>
+                <p> Feats: {{ item[0].feats }}</p>
+                <p> Languages: {{ item[0].languages }}</p>
+                <p> Proficiencies: {{ item[0].proficiencies }}</p>
+                <p> Ability Score Increase: {{ item[0].AS_name }} +{{ item[0].AS_inc_val }}</p>
+                <p> Speed: {{ item[0].speed }}</p>
+                <p> Size: {{ item[0].size }}</p>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+
+</ul>
+</body>
+</html>

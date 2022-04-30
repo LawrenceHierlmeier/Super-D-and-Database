@@ -60,14 +60,26 @@ def delete_character(name):
 
         return
 
+def list_races():
+    with DatabaseConnection('CS2300Proj.db') as connection:
+        cursor = connection.cursor()
 
-def get_race_info():  # use to display all races information
+        retrieve_query = "SELECT NAME " \
+                         "FROM RACE"
+        cursor.execute(retrieve_query)
+
+        races = [{'name': row[0]} for row in cursor.fetchall()]
+
+        return races
+
+def get_race_info(race_name):  # use to display all races information
     with DatabaseConnection('CS2300Proj.db') as connection:
         cursor = connection.cursor()
 
         retrieve_query = "SELECT * " \
-                         "FROM RACE"
-        cursor.execute(retrieve_query)
+                         "FROM RACE " \
+                         "WHERE NAME = ?"
+        cursor.execute(retrieve_query, (race_name,))
         race_attributes = [{'name': row[0], 'feats': row[1], 'languages': row[2], 'proficiencies': row[3],
                             'AS_name': row[4], 'AS_inc_val': row[5], 'speed': row[6],
                             'size': row[7]} for row in cursor.fetchall()]

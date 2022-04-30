@@ -11,8 +11,8 @@ nav = Navigation(app)
 nav.Bar('top', [
     nav.Item('Home', 'home'),
     nav.Item('Characters', 'character_list'),
-    nav.Item('Campaigns', ''),
-    #nav.Item('Races', ''),
+    #nav.Item('Campaigns', ''),
+    nav.Item('Races', 'race_list'),
     nav.Item('Classes', 'class_list'),
     #nav.Item('Feats', ''),
     nav.Item('Add Character', 'insert_character'),
@@ -155,6 +155,22 @@ def class_list():
 
     print(class_tuple)
     return render_template("class_list.html", classes=class_tuple)
+
+
+@app.route('/race_list', methods=["GET", "POST"])
+def race_list():
+    races = database.list_races()
+    print(races)
+    print(len(races))
+
+    race_tuple = []
+
+    for i in range(len(races)):
+        race_tuple.append(database.get_race_info(races[i]['name']))
+
+    print(race_tuple)
+    return render_template("race_list.html", races=race_tuple)
+
 
 if __name__ == '__main__':
     app.run(debug=True)
