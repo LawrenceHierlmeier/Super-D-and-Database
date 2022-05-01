@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Home</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
+</head>
+<body>
+<ul>
+    {% for item in nav.top %}
+    <li class="{{ 'active' if item.is_active else '' }}">
+        <a href="{{ item.url }}">{{ item.label }}</a>
+    </li>
+    {% endfor %}
+
+    <h1>{{ character[0].name }}</h1>
+
+    <h2>Race: {{ race_info[0].name }}</h2>
+    <p>Languages: {{ race_info[0].languages }}</p>
+    <p>Speed: {{ race_info[0].speed }}</p>
+    <p>Size: {{ race_info[0].size }}</p>
+
+    <h2>Class: {{ class_info[0].name }}</h2>
+    <p>Hit-Die: d{{ class_info[0].hit_die }}</p>
+    <p>Saving Throws: {{ class_info[0].saving_throws }}</p>
+</ul>
+</body>
+</html>

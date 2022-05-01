@@ -17,9 +17,15 @@
         {% for item in chars %}
         <div class="column">
             <div class="card">
-                <h3>{{ item[0].name }}</h3>
-                <p>{{ item[0].race }}</p>
-                <p>{{ item[0].class }}</p>
+                <a href="{{ url_for('character_page', character_name = item[0].name ) }}"><h3>{{ item[0].name }}</h3></a>
+                <p><b>Race: </b>{{ item[0].race }}</p>
+                <p><b>Class: </b>{{ item[0].class }}</p>
+                <p><b>Strength</b>: {{ item[0].strength }}</p>
+                <p><b>Dexterity</b>: {{ item[0].dexterity }}</p>
+                <p><b>Constitution</b>: {{ item[0].constitution }}</p>
+                <p><b>Intelligence</b>: {{ item[0].intelligence }}</p>
+                <p><b>Wisdom</b>: {{ item[0].wisdom }}</p>
+                <p><b>Charisma</b>: {{ item[0].charisma }}</p>
             </div>
         </div>
         {% endfor %}

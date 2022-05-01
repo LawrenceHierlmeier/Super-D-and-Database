@@ -11,6 +11,7 @@ nav = Navigation(app)
 nav.Bar('top', [
     nav.Item('Home', 'home'),
     nav.Item('Characters', 'character_list'),
+    nav.Item('Character Page', 'character_page', {'character_name': 'none'}),
     nav.Item('Add Character', 'insert_character'),
     #nav.Item('Modify Character', ''),
     #nav.Item('Remove Character', ''),
@@ -29,22 +30,28 @@ def home():
 @app.route('/characters')
 def character_list():
     chars = database.list_characters()
-    print(chars)
-    print(len(chars))
+    # print(chars)
+    # print(len(chars))
 
     character_tuple = []
 
     for i in range(len(chars)):
         character_tuple.append(database.get_character_info(chars[i]['name']))
-    #race_stats = []
 
-    #for character in chars:
-    #    race_stats = database.get_race_attributes(chars[0]['race'])
-
-    print(character_tuple)
-    #print(race_stats)
+    # print(character_tuple)
 
     return render_template('character_list.html', chars=character_tuple)
+
+
+@app.route('/characters/<character_name>')
+def character_page(character_name):
+    character = database.get_character_info(character_name)
+    print(character)
+    race_info = database.get_race_info(character[0]['race'])
+    print(race_info)
+    class_info = database.get_class_info(character[0]['class'])
+    print(class_info)
+    return render_template('character_page.html', character=character, race_info=race_info, class_info=class_info)
 
 
 @app.route('/add_character', methods=["GET", "POST"])
