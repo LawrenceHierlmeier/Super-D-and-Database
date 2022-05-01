@@ -272,8 +272,6 @@ def get_character_inventory(character_name):
                          "WHERE CHARACTER_NAME = ?"
         cursor.execute(retrieve_query, (character_name,))
 
-        inventory = cursor.fetchall()
-
         inventory = [{'item': row[0], 'item_weight': row[1]} for row in cursor.fetchall()]
 
         return inventory
