@@ -88,44 +88,43 @@ def insert_campaign():
         name = request.form['Name']
         region = request.form['Region']
         NPCS = request.form['NPCS']
-        database.add_campaign(name, region, NPCS)
     return render_template('add_campaign.html')
-
 
 @app.route('/edit_campaign', methods=['GET', 'POST'])
 def edit_campaign():
-    campaigns = database.list_campaigns() #get list of campaign names
+    #campaigns = database.get_campaign_names() #get list of campaign names
+    campaigns = ['random1', 'random2', 'random3']
     if request.method == "POST":
         if request.form['submit'] == 'Delete Campaign':
             campaign_to_delete = request.form['old_name']
             print("campaign deleted")
-            database.delete_campaign(campaign_to_delete)
+            #database.delete_campaign(campaign_to_delete)
         elif request.form['submit'] == 'Update':
             old_name = request.form['old_name']
             new_name = request.form['new_name']
             region = request.form['region']
             num_npcs = request.form['num_npcs']
-            database.modify_campaign(old_name, new_name, region, num_npcs)
-            print("campaign updated")
+            #database.modify_campaign(new_name, region, num_npcs, old_name)
             print(old_name, new_name, region, num_npcs)
     return render_template('edit_campaign.html', campaigns=campaigns)
 
 
 @app.route('/add_feat_to_character', methods=["GET", "POST"])
 def character_feat():
-    feat_names = database.list_feats()
-    character_names = database.list_characters()
-    if (len(character_names) == 0):
-        print("Add a Character First!")
-        return render_template('home.html')
+    feat_attributes = {'Prereq': "",
+                       'Description': ""}
+    characters = ["Bob", "John", "Drax"]
+    feats = ["Strong", "Agile", "Quick"]
 
     if request.method == "POST":
         chosen_name = request.form['chosen_name']
         chosen_feat = request.form['chosen_feat']
         print(chosen_name, chosen_feat)
-        database.add_feat_to_character(chosen_name, chosen_feat)
-
-    return render_template('add_feat_to_character.html', characters=character_names, feats=feat_names)
+        #database.add_feat_to_character(chosen_name, chosen_feat)
+        feat_attributes = {'Prereq': "Level 12",
+                           'Description': "Agile"}
+    return render_template('add_feat_to_character.html', characters=characters, feats=feats,
+                           feat_prereq=feat_attributes['Prereq'], feat_description=feat_attributes['Description'])
 
 @app.route('/add_to_inventory', methods =["GET", "POST"])
 def insert_character_inventory():
@@ -136,19 +135,16 @@ def insert_character_inventory():
         database.add_item_to_inventory(item_name, item_weight, character_name)
     return render_template('add_to_inventory.html')
 
-
 @app.route('/add_char_to_campaign', methods=["GET", "POST"])
 def add_char_to_campaign():
-    campaigns = database.list_campaigns()
-    characters = database.list_characters()
-    if (len(characters) == 0):
-        print("Add a Character First!")
-        return render_template("home.html")
-
+    #characters = database.list_characters()
+    characters = ["bob", "john", "bill"]
+    #campaigns = database.get_campaign_names()
+    campaigns = ["camp1", "camp2", "camp3"]
     if request.method == "POST":
         character_name = request.form['chosen_name']
         campaign_name = request.form['chosen_campaign']
-        database.add_character_to_campaign(campaign_name, character_name)
+        #database.add_character_to_campaign(campaign_name, character_name)
         print(character_name, campaign_name)
     return render_template('add_char_to_campaign.html', characters=characters, campaigns=campaigns)
 
@@ -200,6 +196,20 @@ def subrace_list():
     print("on sub races page", selected_primary_race)
 
     return render_template("subrace_list.html", subraces=subrace_tuple, primary_race=selected_primary_race)
+
+'''
+@app.route('/display_char_inventory', methods=["GET", "POST"])
+def char_inventory():
+    inventory = database #needs connecting
+
+    print(inventory)
+    print(len(inventory))
+
+    inventory
+    for x in range(len(inventory)):
+        
+Not ready so I have it commented out for the time being
+'''
 
 
 @app.route('/feat_list', methods=["GET", "POST"])
