@@ -7,22 +7,22 @@
 </head>
 <body>
 <form action="" method="POST">
-    <p>Choose a Character
-        <select name="chosen_name" name="characters" method="GET" action="/">
+    <p>Character
+        <select name="chosen_name" method="GET" action="/">
             <option hidden="">Choose Character</option>
             {% for char in characters %}
                 <option value="{{char}}">{{char}}</option>
             {% endfor %}
         </select>
     </p>
-    <p>Choose a Feat
-        <select name="chosen_feat" name="feats" method="GET" action="/">
+    <p>Feat
+        <select name="chosen_feat" method="GET" action="/">
             <option hidden="">Choose Feat</option>
             {% for feat in feats %}
                 <option value="{{feat}}">{{feat}}</option>
             {% endfor %}
         </select>
-        <input type="submit" id="feat_details" value="View Feat Details"/>
+        <input type="submit" id="feat_details" value="View Feat Details" onsubmit=""/>
     </p>
     <p>
         <div style="background: lightgray;
@@ -38,6 +38,8 @@
         <p>Description: {{feat_description}}</p>
         </div>
     </p>
+    <p><a href="{{ url_for('character_feat') }}"><input type="submit" name="submit" value="Add" formmethod="POST"/></a></p>
 </form>
+<a href="{{ url_for('home') }}"><input type="button" value="Return to Home Page"></a>
 </body>
 </html>
