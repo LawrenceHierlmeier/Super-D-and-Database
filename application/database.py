@@ -433,3 +433,30 @@ def class_race_combination(): #gets combinations of classes and races that have 
                              for row in cursor.fetchall()]
 
         return class_race_tuples
+
+
+def character_and_classes(character_name):
+    with DatabaseConnection('CS2300Proj.db') as connection:
+        cursor = connection.cursor()
+
+        retrieve_query = "SELECT CLASS_NAME" \
+                         "FROM HAS " \
+                         "WHERE CHARACTER_NAME = ?"
+        cursor.execute(retrieve_query, (character_name,))
+        character_classes = [row[0] for row in cursor.fetchall()]
+
+        return character_classes
+
+
+def character_and_feats(character_name):
+    with DatabaseConnection('CS2300Proj.db') as connection:
+        cursor = connection.cursor()
+
+        retrieve_query = "SELECT FEAT_NAME" \
+                         "FROM POSSESSES " \
+                         "WHERE CHARACTER_NAME = ?"
+        cursor.execute(retrieve_query, (character_name,))
+        character_feats = [row[0] for row in cursor.fetchall()]
+
+        return character_feats
+
