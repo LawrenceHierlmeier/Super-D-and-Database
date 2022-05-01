@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Class and Race Combinations</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/character_list.css') }}">
+</head>
+<body>
+<ul>
+    {% for item in nav.top %}
+    <li class="{{ 'active' if item.is_active else '' }}">
+        <a href="{{ item.url }}">{{ item.label }}</a>
+    </li>
+    {% endfor %}
+
+    <h2> Recommended Class and Race Combinations based on Ability Scores Modifiers </h2>
+
+    <div class="row">
+        {% for item in combos %}
+        <div class="column">
+            <div class="card">
+                <p> <b>Class:</b> {{ item['class'] }}</p>
+                <p> <b>Race:</b> {{ item['race'] }}</p>
+                <p> <b>Ability Score Increase:</b> {{ item['AS_name'] }} +{{ item['AS_inc_val'] }}</p>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+
+</ul>
+</body>
+</html>

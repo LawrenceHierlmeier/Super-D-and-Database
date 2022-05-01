@@ -21,7 +21,8 @@ nav.Bar('top', [
     nav.Item('Add Campaign', 'insert_campaign'),
     nav.Item('Add Character to Campaign', 'add_char_to_campaign'),
     nav.Item('Edit Campaign', 'edit_campaign'),
-    nav.Item('Add Feat to Character', 'character_feat')#,
+    nav.Item('Add Feat to Character', 'character_feat'),
+    nav.Item('Class and Race Combinations', 'class_race_combos')
     #nav.Item('Remove Feat from Character', '')
 ])
 
@@ -226,6 +227,12 @@ def campaign_list():
 
     print(campaign_tuple)
     return render_template("campaign_list.html", campaigns=campaign_tuple)
+
+@app.route('/class_race_combos', methods=["GET", "POST"])
+def class_race_combos():
+    combos = database.class_race_combination()
+    print(combos)
+    return render_template("class_race_combos.html", combos=combos)
 
 
 if __name__ == '__main__':
