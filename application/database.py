@@ -282,11 +282,8 @@ def get_character_inventory(character_name):
                          "FROM INVENTORY " \
                          "WHERE CHARACTER_NAME = ?"
         cursor.execute(retrieve_query, (character_name,))
-<<<<<<< HEAD
-        inventory = cursor.fetchall()
-=======
+
         inventory = [{'item': row[0], 'item_weight': row[1]} for row in cursor.fetchall()]
->>>>>>> 74de12a10068281abbe40a567fa8cd7e97da3b78
 
         return inventory
 
@@ -297,18 +294,15 @@ def add_character_to_campaign(campaign_name, character_name):
 
         update_query1 = "UPDATE CHARACTER " \
                        "SET CAMPAIGN_NAME = ? " \
-<<<<<<< HEAD
                        "WHERE (NAME = ?)"
-        cursor.execute(update_query, (campaign_name, character_name,))
-=======
-                       "WHERE NAME = ?"
+
         cursor.execute(update_query1, (campaign_name, character_name,))
         #increment number of players count in specific campaign tuple
         update_query2 = "UPDATE CAMPAIGN " \
                         "SET NUM_PLAYERS = NUM_PLAYERS+1 " \
                         "WHERE NAME = ?"
         cursor.execute(update_query2, (campaign_name,))
->>>>>>> 74de12a10068281abbe40a567fa8cd7e97da3b78
+
 
         return
 
