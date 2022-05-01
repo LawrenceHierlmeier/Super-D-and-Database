@@ -10,8 +10,8 @@
     <p>Campaign
         <select name="old_name" action="/">
             <option hidden="">Choose a Campaign</option>
-            {% for name in campaigns %}
-                <option value="{{name}}">{{name}}</option>
+            {% for camp in campaigns %}
+                <option value="{{camp['name']}}">{{camp['name']}}</option>
             {% endfor %}
         </select>
         <input type="submit" name="submit" value="Delete Campaign" onsubmit="" formmethod="POST"/>
