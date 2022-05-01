@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" name="viewport" content="width=device-width, initial-scale=1">
+    <title> {{ character }} Inventory</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/character_list.css') }}">
+</head>
+<body>
+<ul>
+    {% for item in nav.top %}
+    <li class="{{ 'active' if item.is_active else '' }}">
+        <a href="{{ item.url }}">{{ item.label }}</a>
+    </li>
+    {% endfor %}
+
+    <h2> {{ character }} Inventory</h2>
+
+    <div class="row">
+        {% for item in inventory %}
+        <div class="column">
+            <div class="card">
+                <h3>{{ item[0].name }}</h3>
+                <p> Item Name: {{ item[0].item_name }}</p>
+                <p> Item Weight: {{ item[0].item_weight }}</p>
+                <p> Weight Limit: {{  }}</p>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+
+</ul>
+</body>
+</html>
