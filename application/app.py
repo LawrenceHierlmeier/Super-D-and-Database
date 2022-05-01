@@ -91,6 +91,7 @@ def insert_campaign():
         database.add_campaign(name, region, NPCS)
     return render_template('add_campaign.html')
 
+
 @app.route('/edit_campaign', methods=['GET', 'POST'])
 def edit_campaign():
     campaigns = database.list_campaigns() #get list of campaign names
@@ -104,7 +105,8 @@ def edit_campaign():
             new_name = request.form['new_name']
             region = request.form['region']
             num_npcs = request.form['num_npcs']
-            database.modify_campaign(new_name, region, num_npcs, old_name)
+            database.modify_campaign(old_name, new_name, region, num_npcs)
+            print("campaign updated")
             print(old_name, new_name, region, num_npcs)
     return render_template('edit_campaign.html', campaigns=campaigns)
 
