@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Remove a Feat from {{ character_name }}</title>
+</head>
+<body>
+    <h2>Remove a Feat from {{ character_name }}</h2>
+    <form action="" method="POST">
+        <p>Feat
+            <select name="chosen_feat" method="GET" action="/">
+                <option hidden="">Choose Feat</option>
+                {% for feat in feats %}
+                    <option value="{{feat}}">{{feat}}</option>
+                {% endfor %}
+            </select>
+        </p>
+        <p>
+            <a href="{{ url_for('remove_feat_from_character', character_name = character_name) }}">
+                <input type="submit" name="submit" value="Remove" formmethod="POST"/>
+            </a>
+        </p>
+    </form>
+<a href="{{ url_for('character_page', character_name = character_name) }}"><input type="button" value="Return to Character Page"></a>
+</body>
+</html>

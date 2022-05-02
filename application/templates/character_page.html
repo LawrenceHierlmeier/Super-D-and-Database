@@ -13,6 +13,8 @@
     </li>
     {% endfor %}
 
+    <a href="{{ url_for('remove_feat_from_character', character_name = character[0].name ) }}"><h2>Remove a Feat</h2></a>
+
     <h1>{{ character[0].name }}</h1>
 
     <h2>Race: {{ race_info[0].name }}</h2>

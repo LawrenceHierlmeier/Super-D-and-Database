@@ -78,7 +78,6 @@ def get_race_info(race_name):  # use to display all races information
                             'AS_name': row[4], 'AS_inc_val': row[5], 'speed': row[6],
                             'size': row[7]} for row in cursor.fetchall()]
 
-
         return race_attributes
 
 
@@ -169,8 +168,22 @@ def add_feat_to_character(character_name, feat_name):
     with DatabaseConnection('CS2300Proj.db') as connection:
         cursor = connection.cursor()
 
-        insert_query = "INSERT INTO POSSESSES VALUES(?, ?)"
-        cursor.execute(insert_query, (character_name, feat_name,))
+        try:
+            insert_query = "INSERT INTO POSSESSES VALUES(?, ?)"
+            cursor.execute(insert_query, (character_name, feat_name,))
+        except: #error handling
+            print("Character already has feat!")
+
+        return
+
+
+def remove_feat_from_character(character_name, feat_name):
+    with DatabaseConnection('CS2300Proj.db') as connection:
+        cursor = connection.cursor()
+
+        delete_query = "DELETE FROM POSSESSES " \
+                       "WHERE CHARACTER_NAME = ? AND FEAT_NAME = ?"
+        cursor.execute(delete_query, (character_name, feat_name,))
 
         return
 
@@ -179,8 +192,23 @@ def add_class_to_character(character_name, class_name):
     with DatabaseConnection('CS2300Proj.db') as connection:
         cursor = connection.cursor()
 
-        insert_query = "INSERT INTO HAS VALUES(?, ?)"
-        cursor.execute(insert_query, (class_name, character_name,))
+        try:
+            insert_query = "INSERT INTO HAS VALUES(?, ?)"
+            cursor.execute(insert_query, (class_name, character_name,))
+        except:
+            print("Character already has Class!")
+
+        return
+
+
+def remove_class_from_character(character_name, class_name):
+    with DatabaseConnection('CS2300Proj.db') as connection:
+        cursor = connection.cursor()
+
+        delete_query = "DELETE FROM HAS " \
+                       "WHERE CHARACTER_NAME = ? AND CLASS_NAME = ?"
+        cursor.execute(delete_query, (character_name, class_name,))
+
         return
 
 
@@ -189,7 +217,7 @@ def modify_character(old_name, new_name, intelligence, strength, dexterity, wisd
         cursor = connection.cursor()
 
         update_query = "UPDATE CHARACTER " \
-                       "SET NAME = ?, INTELLIGENCE = ?, STRENGTH = ?, DEXTERITY = ?, WISDOM = ?, CONSTITUTION = ?," \
+                       "SET NAME = ?, INTELLIGENCE = ?, STRENGTH = ?, DEXTERITY = ?, WISDOM = ?, CONSTITUTION = ?, " \
                        "    CHARISMA = ?, RACE_NAME = ? " \
                        "WHERE NAME = ?"
         cursor.execute(update_query, (new_name, intelligence, strength, dexterity,
@@ -374,17 +402,17 @@ def add_character(name, intelligence, strength, dexterity, wisdom, constitution,
         cursor = connection.cursor()
 
         # insert into CHARACTER table
-        insert_query = "INSERT INTO CHARACTER(NAME, INTELLIGENCE, STRENGTH, DEXTERITY, WISDOM, CONSTITUTION, CHARISMA," \
-                       "                      RACE_NAME) VALUES (?, ?, ?, ?, ?, ?, ?, ?)"
+        insert_query = "INSERT INTO CHARACTER(NAME, INTELLIGENCE, STRENGTH, DEXTERITY, WISDOM, CONSTITUTION, " \
+                       "                      CHARISMA, RACE_NAME) VALUES (?, ?, ?, ?, ?, ?, ?, ?)"
         cursor.execute(insert_query,
                        (name, intelligence, strength, dexterity, wisdom, constitution, charisma, race_name,))
         return
 
 
-def fastest_character():
+def slowest_characters():
     with DatabaseConnection('CS2300Proj.db') as connection:
         cursor = connection.cursor()
-        # gets names of slowest races and respective speeds
+        # gets names of slowest characters based on race and respective speeds
         retrieve_query = "SELECT C.NAME, R1.SPEED " \
                          "FROM CHARACTER AS C, RACE AS R1 " \
                          "WHERE R1.SPEED = (SELECT MIN(SPEED) " \
@@ -395,10 +423,10 @@ def fastest_character():
         return characters
 
 
-def max_race_speed():
+def fastest_characters():
     with DatabaseConnection('CS2300Proj.db') as connection:
         cursor = connection.cursor()
-        # gets names of fastest races and respective speeds
+        # gets names of fastest characters based on race and respective speeds
         retrieve_query = "SELECT C.NAME, R1.SPEED " \
                          "FROM CHARACTER AS C, RACE AS R1 " \
                          "WHERE R1.SPEED = (SELECT MAX(SPEED) " \
@@ -427,7 +455,7 @@ def character_and_classes(character_name):
     with DatabaseConnection('CS2300Proj.db') as connection:
         cursor = connection.cursor()
 
-        retrieve_query = "SELECT CLASS_NAME" \
+        retrieve_query = "SELECT CLASS_NAME " \
                          "FROM HAS " \
                          "WHERE CHARACTER_NAME = ?"
         cursor.execute(retrieve_query, (character_name,))
@@ -440,7 +468,7 @@ def character_and_feats(character_name):
     with DatabaseConnection('CS2300Proj.db') as connection:
         cursor = connection.cursor()
 
-        retrieve_query = "SELECT FEAT_NAME" \
+        retrieve_query = "SELECT FEAT_NAME " \
                          "FROM POSSESSES " \
                          "WHERE CHARACTER_NAME = ?"
         cursor.execute(retrieve_query, (character_name,))
