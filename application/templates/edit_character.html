@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Edit Character {{ character_name }}</title>
+    <h1>Edit Character {{ character_name }}</h1>
+</head>
+<body>
+<form action="" method="POST">
+    <p><a href="{{ url_for('home') }}"><input type="submit" name="submit" value="Delete" formmethod="POST"/></a>
+    </p>
+    <p>New Name <input type="text" name="new_name" /></p>
+    <p>Intelligence <input type="number" name="Intelligence" min="0" value=0 /></p>
+    <p>Strength <input type="number" name="Strength" min="0" value=0 /></p>
+    <p>Dexterity <input type="number" name="Dexterity" min="0" value=0 /></p>
+    <p>Wisdom <input type="number" name="Wisdom" min="0" value=0 /></p>
+    <p>Constitution <input type="number" name="Constitution" min="0" value=0 /></p>
+    <p>Charisma <input type="number" name="Charisma" min="0" value=0 /></p>
+    <p>Race <select name="Race">
+        <option value="Dwarf">Dwarf</option>
+        <option value="Elf">Elf</option>
+        <option value="Halfing">Halfing</option>
+        <option value="Human">Human</option>
+        <option value="Dragonborn">Dragonborn</option>
+        <option value="Gnome">Gnome</option>
+        <option value="Half-Elf">Half-Elf</option>
+        <option value="Half-Orc">Half-Orc</option>
+        <option value="Tiefling">Tiefling</option>
+    </select></p>
+    <p></p>
+    <p><a href="{{ url_for('home') }}"><input type="submit" name="submit" value="Update" formmethod="POST"/></a></p>
+</form>
+<a href="{{ url_for('home') }}"><input type="button" value="Return to Home Page"></a>
+</body>
+</html>
