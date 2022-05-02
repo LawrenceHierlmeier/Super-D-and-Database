@@ -10,13 +10,11 @@ nav = Navigation(app)
 nav.Bar('top', [
     nav.Item('Home', 'home'),
     nav.Item('Characters', 'character_list'),
-    nav.Item('Character Page', 'character_page', {'character_name': 'none'}),
     nav.Item('Campaigns', 'campaign_list'),
     nav.Item('Races', 'race_list'),
     nav.Item('Classes', 'class_list'),
     nav.Item('Feats', 'feat_list'),
     nav.Item('Add Character', 'insert_character'),
-    #nav.Item('Modify Character', ''),
     nav.Item('Add Campaign', 'insert_campaign'),
     nav.Item('Edit Campaign', 'edit_campaign'),
     nav.Item('Add Character to Campaign', 'add_char_to_campaign'),
@@ -24,8 +22,6 @@ nav.Bar('top', [
     nav.Item('Add Class to Character', 'add_class_to_character'),
     nav.Item('Class and Race Combinations', 'class_race_combos'),
     nav.Item('Add Item to Character Inventory', 'insert_character_inventory')
-
-    #nav.Item('Remove Feat from Character', '')
 ])
 
 
@@ -37,19 +33,22 @@ def home():
 @app.route('/characters')
 def character_list():
     chars = database.list_characters()
-    #fastest_characters = database.fastest_characters()
-    #slowest_characters = database.slowest_characters()
-    # print(chars)
-    # print(len(chars))
+    fastest_characters = database.fastest_characters()
+    print("fastest", fastest_characters)
+    slowest_characters = database.slowest_characters()
+    print("slowest", slowest_characters)
+    print(chars)
+    print(len(chars))
 
     character_tuple = []
 
     for i in range(len(chars)):
         character_tuple.append(database.get_character_info(chars[i]['name']))
 
-    # print(character_tuple)
+    print(character_tuple)
 
-    return render_template('character_list.html', chars=character_tuple)
+    return render_template('character_list.html', chars=character_tuple, fastest_chars=fastest_characters,
+                           slowest_chars=slowest_characters)
 
 
 @app.route('/characters/<character_name>', methods=["GET", "POST"])
@@ -74,6 +73,7 @@ def character_page(character_name):
             database.remove_feat_from_character(character_name, feat)
 
     character_inventory = database.get_character_inventory(character_name)
+    num_items_in_inventory = database.num_items_in_inventory(character_name)
 
     feats = database.character_and_feats(character_name)
     # print(feats)
@@ -82,7 +82,8 @@ def character_page(character_name):
         feat_info.append(database.get_feat_info(feats[i]))
     # print(feat_info)
 
-    return render_template('character_page.html', character=character, race_info=race_info, class_info=class_info, inventory=character_inventory, feats=feat_info)
+    return render_template('character_page.html', character=character, race_info=race_info, class_info=class_info,
+                           inventory=character_inventory, num_items=num_items_in_inventory, feats=feat_info)
 
 
 @app.route('/add_character', methods=["GET", "POST"])
@@ -110,7 +111,7 @@ def edit_character(character_name):
         if request.form['submit'] == 'Delete':
             database.delete_character(character_name)
             print(character_name, "was deleted")
-            return redirect(url_for('home'))
+            return redirect(url_for('character_list'))
         elif request.form['submit'] == 'Update':
             new_name = request.form['new_name']
             intelligence = request.form['Intelligence']
@@ -123,7 +124,7 @@ def edit_character(character_name):
             database.modify_character(character_name, new_name, intelligence, strength, dexterity, wisdom,
                                       constitution, charisma, race)
             print(character_name, "was changed to", new_name)
-            return redirect(url_for('home'))
+            return redirect(url_for('character_list'))
     return render_template('edit_character.html', character_name=character_name)
 
 

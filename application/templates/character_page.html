@@ -13,11 +13,9 @@
     </li>
     {% endfor %}
 
-    <a href="{{ url_for('remove_feat_from_character', character_name = character[0].name ) }}"><h2>Remove a Feat</h2></a>
-    <a href="{{ url_for('remove_class_from_character', character_name = character[0].name ) }}"><h2>Remove a Class</h2></a>
     <a href="{{ url_for('edit_character', character_name = character[0].name ) }}"><h2>Edit this Character</h2></a>
 
-    <h1>{{ character[0].name }}</h1>
+    <h1>{{ character[0].name }} </h1>
 
     <h2>Race: {{ race_info[0].name }}</h2>
     <p>Languages: {{ race_info[0].languages }}</p>
@@ -41,7 +39,7 @@
     </form>
     {% endfor %}
 
-    <h2>Inventory:</h2>
+    <h2>Inventory (Num Items = {{ num_items }}):</h2>
     <ul>
         {% for item in inventory %}
         <li>{{ item.item }}

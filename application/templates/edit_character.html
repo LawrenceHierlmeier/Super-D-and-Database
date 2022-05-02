@@ -9,7 +9,7 @@
 <form action="" method="POST">
     <p><a href="{{ url_for('home') }}"><input type="submit" name="submit" value="Delete" formmethod="POST"/></a>
     </p>
-    <p>New Name <input type="text" name="new_name" /></p>
+    <p>New Name <input type="text" name="new_name" value={{character_name}} /></p>
     <p>Intelligence <input type="number" name="Intelligence" min="0" value=0 /></p>
     <p>Strength <input type="number" name="Strength" min="0" value=0 /></p>
     <p>Dexterity <input type="number" name="Dexterity" min="0" value=0 /></p>

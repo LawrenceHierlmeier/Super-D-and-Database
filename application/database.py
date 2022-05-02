@@ -429,7 +429,8 @@ def slowest_characters():
         retrieve_query = "SELECT C.NAME, R1.SPEED " \
                          "FROM CHARACTER AS C, RACE AS R1 " \
                          "WHERE R1.SPEED = (SELECT MIN(SPEED) " \
-                         "                  FROM RACE AS R2)"
+                         "                  FROM RACE AS R2) " \
+                         "      AND C.RACE_NAME = R1.NAME"
         cursor.execute(retrieve_query)
         characters = [{'name': row[0], 'speed': row[1]} for row in cursor.fetchall()]
 
@@ -443,7 +444,8 @@ def fastest_characters():
         retrieve_query = "SELECT C.NAME, R1.SPEED " \
                          "FROM CHARACTER AS C, RACE AS R1 " \
                          "WHERE R1.SPEED = (SELECT MAX(SPEED) " \
-                         "                  FROM RACE AS R2)"
+                         "                  FROM RACE AS R2) " \
+                         "      AND C.RACE_NAME = R1.NAME"
         cursor.execute(retrieve_query)
         characters = [{'name': row[0], 'speed': row[1]} for row in cursor.fetchall()]
 
