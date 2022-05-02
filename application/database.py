@@ -44,7 +44,8 @@ def get_character_info(name):
 def delete_character(name):
     with DatabaseConnection('CS2300Proj.db') as connection:
         cursor = connection.cursor()
-
+        # turn on foreign keys for sqlite (default is off for some reason)
+        cursor.execute("PRAGMA foreign_keys = ON")
         delete_query = "DELETE FROM CHARACTER " \
                        "WHERE NAME = ?"
         cursor.execute(delete_query, (name,))
@@ -215,7 +216,8 @@ def remove_class_from_character(character_name, class_name):
 def modify_character(old_name, new_name, intelligence, strength, dexterity, wisdom, constitution, charisma, race_name):
     with DatabaseConnection('CS2300Proj.db') as connection:
         cursor = connection.cursor()
-
+        # turn on foreign keys for sqlite (default is off for some reason)
+        cursor.execute("PRAGMA foreign_keys = ON")
         update_query = "UPDATE CHARACTER " \
                        "SET NAME = ?, INTELLIGENCE = ?, STRENGTH = ?, DEXTERITY = ?, WISDOM = ?, CONSTITUTION = ?, " \
                        "    CHARISMA = ?, RACE_NAME = ? " \

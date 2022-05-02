@@ -102,7 +102,7 @@ def edit_character(character_name):
             database.modify_character(character_name, new_name, intelligence, strength, dexterity, wisdom,
                                       constitution, charisma, race)
             print(character_name, "was changed to", new_name)
-            #return redirect(url_for('home'))
+            return redirect(url_for('home'))
     return render_template('edit_character.html', character_name=character_name)
 
 
