@@ -61,9 +61,8 @@ def character_page(character_name):
 
 @app.route('/add_character', methods=["GET", "POST"])
 def insert_character():
-    #get names of fastest and slowest race
-    #fastest_race = database.max_race_speed()
-    #slowest_race = database.min_race_speed()
+    #get names of fastest and slowest characters
+
     if request.method == "POST":
         name = request.form['Name']
         intelligence = request.form['Intelligence']
@@ -74,9 +73,8 @@ def insert_character():
         charisma = request.form['Charisma']
         race = request.form['Race']
         character_class = request.form['Class']
-        campaign_name = 'None'
         print(name, intelligence, strength, dexterity, wisdom, constitution, charisma, race, character_class)
-        database.add_character(name, intelligence, strength, dexterity, wisdom, constitution, charisma, race, campaign_name)
+        database.add_character(name, intelligence, strength, dexterity, wisdom, constitution, charisma, race)
         print(name, character_class)
         database.add_class_to_character(name, character_class)
     return render_template('add_character.html')
