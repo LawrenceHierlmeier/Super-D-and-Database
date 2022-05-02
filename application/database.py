@@ -302,7 +302,8 @@ def add_character_to_campaign(campaign_name, character_name):
                          "WHERE NAME = ?"
         cursor.execute(retrieve_query, (character_name,))
         old_campaign_name = cursor.fetchone()
-        remove_character_from_campaign(character_name, old_campaign_name[0])
+        if (old_campaign_name[0] != "None"):
+            remove_character_from_campaign(character_name, old_campaign_name[0])
         print(old_campaign_name[0])
         print(campaign_name)
 
