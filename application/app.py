@@ -5,7 +5,6 @@ import database
 
 app = Flask(__name__)
 nav = Navigation(app)
-#dungeon_database.create_class_table()
 
 # Initializing Navigation
 nav.Bar('top', [
@@ -19,9 +18,9 @@ nav.Bar('top', [
     nav.Item('Add Character', 'insert_character'),
     #nav.Item('Modify Character', ''),
     nav.Item('Add Campaign', 'insert_campaign'),
-    nav.Item('Add Character to Campaign', 'add_char_to_campaign'),
     nav.Item('Edit Campaign', 'edit_campaign'),
-    nav.Item('Add Feat to Character', 'character_feat'),
+    nav.Item('Add Character to Campaign', 'add_char_to_campaign'),
+    nav.Item('Add Feat to Character', 'add_feat_to_character'),
     nav.Item('Add Class to Character', 'add_class_to_character'),
     nav.Item('Class and Race Combinations', 'class_race_combos'),
     nav.Item('Add Item to Character Inventory', 'insert_character_inventory')
@@ -76,9 +75,8 @@ def insert_character():
         charisma = request.form['Charisma']
         race = request.form['Race']
         character_class = request.form['Class']
-        campaign_name = 'None'
         print(name, intelligence, strength, dexterity, wisdom, constitution, charisma, race, character_class)
-        database.add_character(name, intelligence, strength, dexterity, wisdom, constitution, charisma, race, campaign_name)
+        database.add_character(name, intelligence, strength, dexterity, wisdom, constitution, charisma, race)
         print(name, character_class)
         database.add_class_to_character(name, character_class)
     return render_template('add_character.html')
@@ -114,7 +112,7 @@ def edit_campaign():
 
 
 @app.route('/add_feat_to_character', methods=["GET", "POST"])
-def character_feat():
+def add_feat_to_character(): #add or remove a feat from a character
     feat_names = database.list_feats()
     character_names = database.list_characters()
     if (len(character_names) == 0):
@@ -122,12 +120,18 @@ def character_feat():
         return render_template('home.html')
 
     if request.method == "POST":
-        chosen_name = request.form['chosen_name']
-        chosen_feat = request.form['chosen_feat']
-        print(chosen_name, chosen_feat)
-        database.add_feat_to_character(chosen_name, chosen_feat)
+        if request.form['submit'] == 'Add':
+            chosen_name = request.form['chosen_name']
+            chosen_feat = request.form['chosen_feat']
+            print(chosen_name, chosen_feat)
+            database.add_feat_to_character(chosen_name, chosen_feat)
 
     return render_template('add_feat_to_character.html', characters=character_names, feats=feat_names)
+
+
+@app.route('/remove_feat_from_character', methods=["GET", "POST"])
+def remove_feat_from_character():
+    return render_template('remove_feat_from_character.html', )
 
 
 @app.route('/add_class_to_character', methods=["GET", "POST"])

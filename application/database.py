@@ -5,6 +5,7 @@ with DatabaseConnection('CS2300Proj.db') as connection:
     # turn on foreign keys for sqlite (default is off for some reason)
     cursor.execute("PRAGMA foreign_keys = ON")
 
+
 def list_characters():
     with DatabaseConnection('CS2300Proj.db') as connection:
         cursor = connection.cursor()
@@ -75,6 +76,7 @@ def list_races():
 
         return races
 
+
 def get_race_info(race_name):  # use to display all races information
     with DatabaseConnection('CS2300Proj.db') as connection:
         cursor = connection.cursor()
@@ -87,7 +89,6 @@ def get_race_info(race_name):  # use to display all races information
         race_attributes = [{'name': row[0], 'feats': row[1], 'languages': row[2], 'proficiencies': row[3],
                             'AS_name': row[4], 'AS_inc_val': row[5], 'speed': row[6],
                             'size': row[7]} for row in cursor.fetchall()]
-
 
         return race_attributes
 
@@ -105,6 +106,7 @@ def list_subraces(primary_race):
 
         return subraces
 
+
 def get_subrace_info(subrace_name):  # use to display subrace info of primary race
     with DatabaseConnection('CS2300Proj.db') as connection:
         cursor = connection.cursor()
@@ -117,6 +119,7 @@ def get_subrace_info(subrace_name):  # use to display subrace info of primary ra
                                'feats': row[4], 'primary_race_name': row[5]} for row in cursor.fetchall()]
 
         return subrace_attributes
+
 
 def list_classes():
     with DatabaseConnection('CS2300Proj.db') as connection:
@@ -159,6 +162,7 @@ def list_feats():
 
         return feats
 
+
 def get_feat_info(feat_name):
     with DatabaseConnection('CS2300Proj.db') as connection:
         cursor = connection.cursor()
@@ -178,6 +182,17 @@ def add_feat_to_character(character_name, feat_name):
 
         insert_query = "INSERT INTO POSSESSES VALUES(?, ?)"
         cursor.execute(insert_query, (character_name, feat_name,))
+
+        return
+
+
+def remove_feat_from_character(character_name, feat_name):
+    with DatabaseConnection('CS2300Proj.db') as connection:
+        cursor = connection.cursor()
+
+        delete_query = "DELETE FROM POSSESSES " \
+                       "WHERE CHARACTER_NAME = ? AND FEAT_NAME = ?"
+        cursor.execute(delete_query, (character_name, feat_name,))
 
         return
 
@@ -292,6 +307,7 @@ def remove_character_from_campaign(character_name, campaign_name):
         cursor.execute(update_query2, (campaign_name,))
 
         return
+
 
 def add_character_to_campaign(campaign_name, character_name):
     with DatabaseConnection('CS2300Proj.db') as connection:
