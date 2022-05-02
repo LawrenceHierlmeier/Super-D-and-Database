@@ -58,7 +58,9 @@ def character_page(character_name):
     print(character)
     race_info = database.get_race_info(character[0]['race'])
     print(race_info)
-    class_info = database.get_class_info(character[0]['class'])
+    class_info = []
+    for i in range(len(character)):
+        class_info.append(database.get_class_info(character[i]['class']))
     print(class_info)
 
     if request.method == "POST":
