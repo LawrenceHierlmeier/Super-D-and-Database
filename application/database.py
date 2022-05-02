@@ -252,7 +252,8 @@ def add_item_to_inventory(item, item_weight, character_name):
         cursor.execute(retrieve_query, (character_name,))
         capacity = cursor.fetchone()
         # if adding item keeps weight below or at capacity
-        if (inventory_weight(character_name) + item_weight <= capacity[0]):
+        # inventory_weight(character_name)
+        if 0 + int(item_weight) <= capacity[0]:
             add_query = "INSERT INTO INVENTORY VALUES (?, ?, ?)"
             cursor.execute(add_query, (item, item_weight, character_name,))
         else:  # over capacity

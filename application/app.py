@@ -22,7 +22,8 @@ nav.Bar('top', [
     nav.Item('Add Character to Campaign', 'add_char_to_campaign'),
     nav.Item('Edit Campaign', 'edit_campaign'),
     nav.Item('Add Feat to Character', 'character_feat'),
-    nav.Item('Class and Race Combinations', 'class_race_combos')
+    nav.Item('Class and Race Combinations', 'class_race_combos'),
+    nav.Item('Add Item to Character Inventory', 'insert_character_inventory')
     #nav.Item('Remove Feat from Character', '')
 ])
 
@@ -129,12 +130,14 @@ def character_feat():
 
 @app.route('/add_to_inventory', methods =["GET", "POST"])
 def insert_character_inventory():
+    character_names = database.list_characters()
+
     if request.method == "POST":
-        character_name = request.form['Character_Name']
+        chosen_name = request.form['chosen_name']
         item_name = request.form['Item_Name']
         item_weight = request.form['Item_Weight']
-        database.add_item_to_inventory(item_name, item_weight, character_name)
-    return render_template('add_to_inventory.html')
+        database.add_item_to_inventory(item_name, item_weight, chosen_name)
+    return render_template('add_to_inventory.html', characters=character_names)
 
 
 @app.route('/add_char_to_campaign', methods=["GET", "POST"])
