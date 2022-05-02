@@ -17,18 +17,6 @@ def list_characters():
         return chars
 
 
-# testing code, may keep
-def get_race_attributes(race):
-    with DatabaseConnection('CS2300Proj.db') as connection:
-        cursor = connection.cursor()
-
-        cursor.execute(f"SELECT * from RACE WHERE NAME = ?", (race,))
-
-        race_attributes = [{'name': row[0], 'size': row[1], 'speed': row[2]} for row in cursor.fetchall()]
-
-        return race_attributes
-
-
 def get_character_info(name):
     with DatabaseConnection('CS2300Proj.db') as connection:
         cursor = connection.cursor()
@@ -447,6 +435,7 @@ def fastest_characters():
         characters = [{'name': row[0], 'speed': row[1]} for row in cursor.fetchall()]
 
         return characters
+
 
 def class_race_combination(): #gets combinations of classes and races that have the same ability score increase name
     with DatabaseConnection('CS2300Proj.db') as connection:
