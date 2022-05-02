@@ -79,6 +79,14 @@ def character_page(character_name):
                 return redirect(url_for('character_page', character_name=character_name))
             else:
                 print("Character already not a part of campaign.")
+        if request.form['submit'] == "Remove Class":
+            class2remove = request.form['class']
+            print(class2remove)
+            if len(class_info) > 1:
+                database.remove_class_from_character(character_name, class2remove)
+                return redirect(url_for('character_page', character_name=character_name))
+            else:
+                print("Character needs at least 1 class!")
 
     character_inventory = database.get_character_inventory(character_name)
     num_items_in_inventory = database.num_items_in_inventory(character_name)
