@@ -33,6 +33,7 @@ nav.Bar('top', [
 def home():
     return render_template('home.html')
 
+
 @app.route('/characters')
 def character_list():
     chars = database.list_characters()
@@ -99,6 +100,29 @@ def insert_character():
         print(name, character_class)
         database.add_class_to_character(name, character_class)
     return render_template('add_character.html')
+
+
+@app.route('/characters/<character_name>/edit_character', methods=["GET", "POST"])
+def edit_character(character_name):
+    if request.method == "POST":
+        if request.form['submit'] == 'Delete':
+            database.delete_character(character_name)
+            print(character_name, "was deleted")
+            return redirect(url_for('home'))
+        elif request.form['submit'] == 'Update':
+            new_name = request.form['new_name']
+            intelligence = request.form['Intelligence']
+            strength = request.form['Strength']
+            dexterity = request.form['Dexterity']
+            wisdom = request.form['Wisdom']
+            constitution = request.form['Constitution']
+            charisma = request.form['Charisma']
+            race = request.form['Race']
+            database.modify_character(character_name, new_name, intelligence, strength, dexterity, wisdom,
+                                      constitution, charisma, race)
+            print(character_name, "was changed to", new_name)
+            #return redirect(url_for('home'))
+    return render_template('edit_character.html', character_name=character_name)
 
 
 @app.route('/add_campaign', methods=["GET", "POST"])
@@ -191,14 +215,14 @@ def remove_class_from_character(character_name):
         return redirect(url_for('character_page', character_name=character_name))
     if request.method == "POST":
         chosen_class = request.form['chosen_class']
-        #database.remove_
-        char_feats = database.character_and_feats(character_name)
-        if (len(char_feats) == 0):
-            print("no feat to remove")
+        database.remove_class_from_character(character_name, chosen_class)
+        char_classes = database.character_and_classes(character_name)
+        if (len(char_classes) == 0):
+            print("no class to remove")
             return redirect(url_for('character_page', character_name=character_name))
         else:
-            print(chosen_class, "feat removed from character", character_name)
-    return render_template('remove_feat_from_character.html', character_name=character_name, classes=char_classes)
+            print(chosen_class, "class removed from character", character_name)
+    return render_template('remove_class_from_character.html', character_name=character_name, classes=char_classes)
 
 
 @app.route('/add_to_inventory', methods =["GET", "POST"])

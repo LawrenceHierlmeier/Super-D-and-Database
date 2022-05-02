@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Remove a Class from {{ character_name }}</title>
+</head>
+<body>
+<h2>Remove a Class from {{ character_name }}</h2>
+    <form action="" method="POST">
+        <p>Class
+            <select name="chosen_class" method="GET" action="/">
+                <option hidden="">Choose Class</option>
+                {% for class in classes %}
+                    <option value="{{class}}">{{class}}</option>
+                {% endfor %}
+            </select>
+        </p>
+        <p>
+            <a href="{{ url_for('remove_class_from_character', character_name = character_name) }}">
+                <input type="submit" name="submit" value="Remove" formmethod="POST"/>
+            </a>
+        </p>
+    </form>
+<a href="{{ url_for('character_page', character_name = character_name) }}"><input type="button" value="Return to Character Page"></a>
+</body>
+</html>
