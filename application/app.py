@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request, redirect, url_for
 from flask_navigation import Navigation
 
 import database
@@ -128,9 +128,22 @@ def add_feat_to_character(): #add or remove a feat from a character
     return render_template('add_feat_to_character.html', characters=character_names, feats=feat_names)
 
 
-@app.route('/remove_feat_from_character', methods=["GET", "POST"])
-def remove_feat_from_character():
-    return render_template('remove_feat_from_character.html', )
+@app.route('/characters/<character_name>/remove_feat_from_character', methods=["GET", "POST"])
+def remove_feat_from_character(character_name):
+    char_feats = database.character_and_feats(character_name)
+    if (len(char_feats) == 0):
+        print("no feat to remove")
+        return redirect(url_for('character_page', character_name=character_name))
+    if request.method == "POST":
+        chosen_feat = request.form['chosen_feat']
+        database.remove_feat_from_character(character_name, chosen_feat)
+        char_feats = database.character_and_feats(character_name)
+        if (len(char_feats) == 0):
+            print("no feat to remove")
+            return redirect(url_for('character_page', character_name=character_name))
+        else:
+            print(chosen_feat, "feat removed from character", character_name)
+    return render_template('remove_feat_from_character.html', character_name=character_name, feats=char_feats)
 
 
 @app.route('/add_class_to_character', methods=["GET", "POST"])
@@ -148,6 +161,24 @@ def add_class_to_character():
         database.add_class_to_character(chosen_name, chosen_class)
 
     return render_template('add_class_to_character.html', characters=character_names, classes=class_names)
+
+
+@app.route('/characters/<character_name>/remove_class_from_character', methods=["GET", "POST"])
+def remove_class_from_character(character_name):
+    char_classes = database.character_and_classes(character_name)
+    if (len(char_classes) == 0):
+        print("no classes to remove")
+        return redirect(url_for('character_page', character_name=character_name))
+    if request.method == "POST":
+        chosen_class = request.form['chosen_class']
+        #database.remove_
+        char_feats = database.character_and_feats(character_name)
+        if (len(char_feats) == 0):
+            print("no feat to remove")
+            return redirect(url_for('character_page', character_name=character_name))
+        else:
+            print(chosen_class, "feat removed from character", character_name)
+    return render_template('remove_feat_from_character.html', character_name=character_name, classes=char_classes)
 
 
 @app.route('/add_to_inventory', methods =["GET", "POST"])
@@ -264,6 +295,7 @@ def class_race_combos():
     combos = database.class_race_combination()
     print(combos)
     return render_template("class_race_combos.html", combos=combos)
+
 
 
 if __name__ == '__main__':

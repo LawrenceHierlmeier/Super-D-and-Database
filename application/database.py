@@ -213,6 +213,17 @@ def add_class_to_character(character_name, class_name):
         return
 
 
+def remove_class_from_character(character_name, class_name):
+    with DatabaseConnection('CS2300Proj.db') as connection:
+        cursor = connection.cursor()
+
+        delete_query = "DELETE FROM HAS " \
+                       "WHERE CHARACTER_NAME = ? AND CLASS_NAME = ?"
+        cursor.execute(delete_query, (character_name, class_name,))
+
+        return
+
+
 def modify_character(old_name, new_name, intelligence, strength, dexterity, wisdom, constitution, charisma, race_name):
     with DatabaseConnection('CS2300Proj.db') as connection:
         cursor = connection.cursor()
@@ -455,7 +466,7 @@ def character_and_classes(character_name):
     with DatabaseConnection('CS2300Proj.db') as connection:
         cursor = connection.cursor()
 
-        retrieve_query = "SELECT CLASS_NAME" \
+        retrieve_query = "SELECT CLASS_NAME " \
                          "FROM HAS " \
                          "WHERE CHARACTER_NAME = ?"
         cursor.execute(retrieve_query, (character_name,))
@@ -468,7 +479,7 @@ def character_and_feats(character_name):
     with DatabaseConnection('CS2300Proj.db') as connection:
         cursor = connection.cursor()
 
-        retrieve_query = "SELECT FEAT_NAME" \
+        retrieve_query = "SELECT FEAT_NAME " \
                          "FROM POSSESSES " \
                          "WHERE CHARACTER_NAME = ?"
         cursor.execute(retrieve_query, (character_name,))
