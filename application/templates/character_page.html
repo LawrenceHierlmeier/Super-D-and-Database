@@ -28,10 +28,25 @@
     <p>Hit-Die: d{{ class_info[0].hit_die }}</p>
     <p>Saving Throws: {{ class_info[0].saving_throws }}</p>
 
+    <h2>Feats:</h2>
+    {% for feat in feats %}
+    <p>Name: {{ feat[0].name }}</p>
+    <p>Description: {{ feat[0].description }}</p>
+    <form action="" method="POST">
+        <input type="hidden" name="feat" value="{{ feat[0].name }}">
+        <a href="{{ url_for('character_page', character_name = character[0].name) }}"><input type="submit" name="submit" value="Remove Feat" formmethod="POST"/></a>
+    </form>
+    {% endfor %}
+
     <h2>Inventory:</h2>
     <ul>
         {% for item in inventory %}
-        <li>{{ item.item }}</li>
+        <li>{{ item.item }}
+            <form action="" method="POST">
+                <input type="hidden" name="item" value="{{ item.item }}">
+                <a href="{{ url_for('character_page', character_name = character[0].name) }}"><input type="submit" name="submit" value="Remove Item" formmethod="POST"/></a>
+            </form>
+        </li>
         {% endfor %}
     </ul>
 

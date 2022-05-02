@@ -285,6 +285,17 @@ def add_item_to_inventory(item, item_weight, character_name):
         return
 
 
+def remove_item_from_inventory(item, character_name):
+    with DatabaseConnection('CS2300Proj.db') as connection:
+        cursor = connection.cursor()
+
+        delete_query = "DELETE FROM INVENTORY " \
+                       "WHERE CHARACTER_NAME = ? AND ITEM = ?"
+        cursor.execute(delete_query, (character_name, item,))
+
+        return
+
+
 def get_character_inventory(character_name):
     with DatabaseConnection('CS2300Proj.db') as connection:
         cursor = connection.cursor()
