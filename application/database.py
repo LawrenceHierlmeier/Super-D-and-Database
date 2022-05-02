@@ -1,5 +1,9 @@
 from database_connection import DatabaseConnection
 
+with DatabaseConnection('CS2300Proj.db') as connection:
+    cursor = connection.cursor()
+    # turn on foreign keys for sqlite (default is off for some reason)
+    cursor.execute("PRAGMA foreign_keys = ON")
 
 def list_characters():
     with DatabaseConnection('CS2300Proj.db') as connection:
@@ -51,8 +55,6 @@ def get_character_info(name):
 def delete_character(name):
     with DatabaseConnection('CS2300Proj.db') as connection:
         cursor = connection.cursor()
-        # turn on foreign keys for sqlite (default is off for some reason)
-        cursor.execute("PRAGMA foreign_keys = ON")
 
         delete_query = "DELETE FROM CHARACTER " \
                        "WHERE NAME = ?"
@@ -192,8 +194,6 @@ def add_class_to_character(character_name, class_name):
 def modify_character(old_name, new_name, intelligence, strength, dexterity, wisdom, constitution, charisma, race_name):
     with DatabaseConnection('CS2300Proj.db') as connection:
         cursor = connection.cursor()
-        # turn on foreign keys for sqlite (default is off for some reason)
-        cursor.execute("PRAGMA foreign_keys = ON")
 
         update_query = "UPDATE CHARACTER " \
                        "SET NAME = ?, INTELLIGENCE = ?, STRENGTH = ?, DEXTERITY = ?, WISDOM = ?, CONSTITUTION = ?," \
@@ -208,8 +208,6 @@ def modify_character(old_name, new_name, intelligence, strength, dexterity, wisd
 def delete_campaign(campaign_name):
     with DatabaseConnection('CS2300Proj.db') as connection:
         cursor = connection.cursor()
-        #turn on foreign keys
-        cursor.execute("PRAGMA foreign_keys = ON")
 
         delete_query = "DELETE FROM CAMPAIGN " \
                        "WHERE NAME = ?"
@@ -280,8 +278,6 @@ def get_character_inventory(character_name):
 def remove_character_from_campaign(character_name, campaign_name):
     with DatabaseConnection('CS2300Proj.db') as connection:
         cursor = connection.cursor()
-        # turn on foreign keys for sqlite (default is off for some reason)
-        cursor.execute("PRAGMA foreign_keys = ON")
 
         # set campaign_name in CHARACTER to 'None'
         update_query1 = "UPDATE CHARACTER " \
@@ -299,8 +295,6 @@ def remove_character_from_campaign(character_name, campaign_name):
 def add_character_to_campaign(campaign_name, character_name):
     with DatabaseConnection('CS2300Proj.db') as connection:
         cursor = connection.cursor()
-        # turn on foreign keys for sqlite (default is off for some reason)
-        cursor.execute("PRAGMA foreign_keys = ON")
 
         # get character's old campaign name
         retrieve_query = "SELECT CAMPAIGN_NAME " \
@@ -370,8 +364,6 @@ def get_campaign_info(campaign_name):
 def modify_campaign(old_name, new_name, region, num_npcs):
     with DatabaseConnection('CS2300Proj.db') as connection:
         cursor = connection.cursor()
-        # turn on foreign keys for sqlite (default is off for some reason)
-        cursor.execute("PRAGMA foreign_keys = ON")
 
         update_query = "UPDATE CAMPAIGN " \
                        "SET NAME = ?, REGION = ?, NPCS = ? " \
@@ -381,43 +373,44 @@ def modify_campaign(old_name, new_name, region, num_npcs):
         return
 
 
-def add_character(name, intelligence, strength, dexterity, wisdom, constitution, charisma, race_name, campaign_name):
+def add_character(name, intelligence, strength, dexterity, wisdom, constitution, charisma, race_name):
     with DatabaseConnection('CS2300Proj.db') as connection:
         cursor = connection.cursor()
+
         # insert into CHARACTER table
-        insert_query = "INSERT INTO CHARACTER VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)"
+        insert_query = "INSERT INTO CHARACTER(NAME, INTELLIGENCE, STRENGTH, DEXTERITY, WISDOM, CONSTITUTION, CHARISMA," \
+                       "                      RACE_NAME) VALUES (?, ?, ?, ?, ?, ?, ?, ?)"
         cursor.execute(insert_query,
-                       (name, intelligence, strength, dexterity, wisdom, constitution, charisma, race_name,
-                        campaign_name,))
+                       (name, intelligence, strength, dexterity, wisdom, constitution, charisma, race_name,))
         return
 
 
-def min_race_speed():
+def fastest_character():
     with DatabaseConnection('CS2300Proj.db') as connection:
         cursor = connection.cursor()
         # gets names of slowest races and respective speeds
-        retrieve_query = "SELECT R1.NAME, R1.SPEED " \
-                         "FROM RACE AS R1 " \
+        retrieve_query = "SELECT C.NAME, R1.SPEED " \
+                         "FROM CHARACTER AS C, RACE AS R1 " \
                          "WHERE R1.SPEED = (SELECT MIN(SPEED) " \
                          "                  FROM RACE AS R2)"
         cursor.execute(retrieve_query)
-        races = [{'name': row[0], 'speed': row[1]} for row in cursor.fetchall()]
+        characters = [{'name': row[0], 'speed': row[1]} for row in cursor.fetchall()]
 
-        return races
+        return characters
 
 
 def max_race_speed():
     with DatabaseConnection('CS2300Proj.db') as connection:
         cursor = connection.cursor()
         # gets names of fastest races and respective speeds
-        retrieve_query = "SELECT R1.NAME, R1.SPEED " \
-                         "FROM RACE AS R1 " \
+        retrieve_query = "SELECT C.NAME, R1.SPEED " \
+                         "FROM CHARACTER AS C, RACE AS R1 " \
                          "WHERE R1.SPEED = (SELECT MAX(SPEED) " \
                          "                  FROM RACE AS R2)"
         cursor.execute(retrieve_query)
-        races = [{'name': row[0], 'speed': row[1]} for row in cursor.fetchall()]
+        characters = [{'name': row[0], 'speed': row[1]} for row in cursor.fetchall()]
 
-        return races
+        return characters
 
 def class_race_combination(): #gets combinations of classes and races that have the same ability score increase name
     with DatabaseConnection('CS2300Proj.db') as connection:
