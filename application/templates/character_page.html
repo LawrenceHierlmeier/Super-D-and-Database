@@ -28,6 +28,14 @@
     <p>Saving Throws: {{ class[0].saving_throws }}</p>
     {% endfor %}
 
+    <h2>Campaign: {{ character[0].campaign }}
+        <form action="" method="POST">
+            <input type="hidden" name="campaign" value="{{ character[0].campaign }}">
+            <a href="{{ url_for('character_page', character_name = character[0].name) }}"><input type="submit" name="submit" value="Remove from Campaign" formmethod="POST"/></a>
+        </form>
+    </h2>
+
+
 
     <h2>Feats:</h2>
     {% for feat in feats %}
@@ -39,7 +47,9 @@
     </form>
     {% endfor %}
 
-    <h2>Inventory (Num Items = {{ num_items }}):</h2>
+    <h2>Inventory:</h2>
+    <p><b>Number of Items:</b> {{num_items}}</p>
+    <p><b>Total Weight:</b> {{weight}}</p>
     <ul>
         {% for item in inventory %}
         <li>{{ item.item }}

@@ -22,21 +22,17 @@ def get_character_info(name):
         cursor = connection.cursor()
 
         retrieve_query = "SELECT C.NAME, C.RACE_NAME, H.CLASS_NAME, " \
-                         "C.STRENGTH, C.DEXTERITY, C.CONSTITUTION, C.INTELLIGENCE, C.WISDOM, C.CHARISMA " \
+                         "       C.STRENGTH, C.DEXTERITY, C.CONSTITUTION, C.INTELLIGENCE, " \
+                         "       C.WISDOM, C.CHARISMA, C.CAMPAIGN_NAME " \
                          "FROM CHARACTER AS C, HAS AS H " \
                          "WHERE (C.NAME = ? AND C.NAME = H.CHARACTER_NAME)"
-
-        # retrieve_query = "SELECT C.NAME, C.RACE_NAME, H.CLASS_NAME, C.CAMPAIGN_NAME, P.FEAT_NAME," \
-        #                 "       C.INTELLIGENCE, C.STRENGTH, C.DEXTERITY, C.WISDOM, C.CONSTITUTION, C.CHARISMA " \
-        #                 "FROM CHARACTER AS C, POSSESSES AS P, HAS AS H " \
-        #                "WHERE (C.NAME = ? AND C.NAME = P.CHARACTER_NAME AND C.NAME = H.CHARACTER_NAME)"
-        # "       AND C.RACE_NAME = S.PRIMARY_RACE_NAME)"
 
         cursor.execute(retrieve_query, (name,))
 
         char_attributes = [{'name': row[0], 'race': row[1], 'class': row[2],
                             'strength': row[3], 'dexterity': row[4], 'constitution': row[5],
-                            'intelligence': row[6], 'wisdom': row[7], 'charisma': row[8]} for row in cursor.fetchall()]
+                            'intelligence': row[6], 'wisdom': row[7], 'charisma': row[8],
+                            'campaign': row[9]} for row in cursor.fetchall()]
 
         return char_attributes
 
@@ -231,7 +227,8 @@ def modify_character(old_name, new_name, intelligence, strength, dexterity, wisd
 def delete_campaign(campaign_name):
     with DatabaseConnection('CS2300Proj.db') as connection:
         cursor = connection.cursor()
-
+        # turn on foreign keys for sqlite (default is off for some reason)
+        cursor.execute("PRAGMA foreign_keys = ON")
         delete_query = "DELETE FROM CAMPAIGN " \
                        "WHERE NAME = ?"
         cursor.execute(delete_query, (campaign_name,))
@@ -257,12 +254,14 @@ def inventory_weight(character_name):  # retrieves the weight of a character's i
         cursor = connection.cursor()
 
         retrieve_query = "SELECT SUM(ITEM_WEIGHT) " \
-                         "FROM INVENTORY AS I " \
+                         "FROM INVENTORY " \
                          "WHERE CHARACTER_NAME = ?"
         cursor.execute(retrieve_query, (character_name,))
-        weight = cursor.fetchone()
+        weight = cursor.fetchone()[0]
+        if (weight == None):
+            weight = 0
 
-        return weight[0]
+        return weight
 
 
 def add_item_to_inventory(item, item_weight, character_name):
@@ -275,8 +274,8 @@ def add_item_to_inventory(item, item_weight, character_name):
         cursor.execute(retrieve_query, (character_name,))
         capacity = cursor.fetchone()
         # if adding item keeps weight below or at capacity
-        # inventory_weight(character_name)
-        if 0 + int(item_weight) <= capacity[0]:
+        current_weight = inventory_weight(character_name)
+        if current_weight + int(item_weight) <= capacity[0]:
             add_query = "INSERT INTO INVENTORY VALUES (?, ?, ?)"
             cursor.execute(add_query, (item, item_weight, character_name,))
         else:  # over capacity

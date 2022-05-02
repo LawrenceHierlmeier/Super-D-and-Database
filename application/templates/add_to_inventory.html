@@ -7,9 +7,8 @@
 </head>
 <body>
 <form action="" method="POST">
-    <p>Character
+    <p>Choose Character
         <select name="chosen_name" method="GET" action="/">
-            <option hidden="">Choose Character</option>
             {% for char in characters %}
                 <option value="{{char['name']}}">{{char['name']}}</option>
             {% endfor %}
@@ -17,7 +16,7 @@
     </p>
     <p>Enter Item's Weight/Name</p>
     <p>Item Name <input type= "text" name="Item_Name" placeholder="Enter the Item's name"> </p>
-    <p>Item Weight <input type= "number" name="Item_Weight" min="0" placeholder="Enter a positive integer"> </p>
+    <p>Item Weight <input type= "number" name="Item_Weight" min=1 value=1></p>
     <p><a href="{{ url_for('insert_character_inventory') }}"><input type="submit" value="Add" formmethod="POST"/></a></p>
 </form>
 <a href="{{ url_for('home') }}"><input type="button" value="Return to Home Page"></a>
