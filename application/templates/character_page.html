@@ -25,6 +25,13 @@
     <p>Saving Throws: {{ class_info[0].saving_throws }}</p>
 
     <h2>Inventory:</h2>
+    <ul>
+        {% for item in inventory %}
+        <li>{{ item.item }}</li>
+        {% endfor %}
+    </ul>
+
+
 
     
 </ul>

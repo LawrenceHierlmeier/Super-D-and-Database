@@ -5,6 +5,7 @@ with DatabaseConnection('CS2300Proj.db') as connection:
     # turn on foreign keys for sqlite (default is off for some reason)
     cursor.execute("PRAGMA foreign_keys = ON")
 
+
 def list_characters():
     with DatabaseConnection('CS2300Proj.db') as connection:
         cursor = connection.cursor()
@@ -14,18 +15,6 @@ def list_characters():
         chars = [{'name': row[0]} for row in cursor.fetchall()]
 
         return chars
-
-
-# testing code, may keep
-def get_race_attributes(race):
-    with DatabaseConnection('CS2300Proj.db') as connection:
-        cursor = connection.cursor()
-
-        cursor.execute(f"SELECT * from RACE WHERE NAME = ?", (race,))
-
-        race_attributes = [{'name': row[0], 'size': row[1], 'speed': row[2]} for row in cursor.fetchall()]
-
-        return race_attributes
 
 
 def get_character_info(name):
@@ -75,6 +64,7 @@ def list_races():
 
         return races
 
+
 def get_race_info(race_name):  # use to display all races information
     with DatabaseConnection('CS2300Proj.db') as connection:
         cursor = connection.cursor()
@@ -105,6 +95,7 @@ def list_subraces(primary_race):
 
         return subraces
 
+
 def get_subrace_info(subrace_name):  # use to display subrace info of primary race
     with DatabaseConnection('CS2300Proj.db') as connection:
         cursor = connection.cursor()
@@ -117,6 +108,7 @@ def get_subrace_info(subrace_name):  # use to display subrace info of primary ra
                                'feats': row[4], 'primary_race_name': row[5]} for row in cursor.fetchall()]
 
         return subrace_attributes
+
 
 def list_classes():
     with DatabaseConnection('CS2300Proj.db') as connection:
@@ -158,6 +150,7 @@ def list_feats():
         feats = [{'name': row[0]} for row in cursor.fetchall()]
 
         return feats
+
 
 def get_feat_info(feat_name):
     with DatabaseConnection('CS2300Proj.db') as connection:
@@ -293,6 +286,7 @@ def remove_character_from_campaign(character_name, campaign_name):
 
         return
 
+
 def add_character_to_campaign(campaign_name, character_name):
     with DatabaseConnection('CS2300Proj.db') as connection:
         cursor = connection.cursor()
@@ -413,6 +407,7 @@ def max_race_speed():
         characters = [{'name': row[0], 'speed': row[1]} for row in cursor.fetchall()]
 
         return characters
+
 
 def class_race_combination(): #gets combinations of classes and races that have the same ability score increase name
     with DatabaseConnection('CS2300Proj.db') as connection:

@@ -58,7 +58,8 @@ def character_page(character_name):
     print(race_info)
     class_info = database.get_class_info(character[0]['class'])
     print(class_info)
-    return render_template('character_page.html', character=character, race_info=race_info, class_info=class_info)
+    character_inventory = database.get_character_inventory(character_name)
+    return render_template('character_page.html', character=character, race_info=race_info, class_info=class_info, inventory=character_inventory)
 
 
 @app.route('/add_character', methods=["GET", "POST"])
