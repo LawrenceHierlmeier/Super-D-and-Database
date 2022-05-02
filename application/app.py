@@ -22,8 +22,10 @@ nav.Bar('top', [
     nav.Item('Add Character to Campaign', 'add_char_to_campaign'),
     nav.Item('Edit Campaign', 'edit_campaign'),
     nav.Item('Add Feat to Character', 'character_feat'),
+    nav.Item('Add Class to Character', 'add_class_to_character'),
     nav.Item('Class and Race Combinations', 'class_race_combos'),
     nav.Item('Add Item to Character Inventory', 'insert_character_inventory')
+
     #nav.Item('Remove Feat from Character', '')
 ])
 
@@ -31,7 +33,6 @@ nav.Bar('top', [
 @app.route('/')
 def home():
     return render_template('home.html')
-
 
 @app.route('/characters')
 def character_list():
@@ -128,6 +129,24 @@ def character_feat():
 
     return render_template('add_feat_to_character.html', characters=character_names, feats=feat_names)
 
+
+@app.route('/add_class_to_character', methods=["GET", "POST"])
+def add_class_to_character():
+    class_names = database.list_classes()
+    character_names = database.list_characters()
+    if (len(character_names) == 0):
+        print("Add a Character First!")
+        return render_template('home.html')
+
+    if request.method == "POST":
+        chosen_name = request.form['chosen_name']
+        chosen_class = request.form['chosen_class']
+        print(chosen_name, chosen_class)
+        database.add_class_to_character(chosen_name, chosen_class)
+
+    return render_template('add_class_to_character.html', characters=character_names, classes=class_names)
+
+
 @app.route('/add_to_inventory', methods =["GET", "POST"])
 def insert_character_inventory():
     character_names = database.list_characters()
@@ -186,6 +205,7 @@ def race_list():
     print(race_tuple)
     return render_template("race_list.html", races=race_tuple)
 
+
 @app.route('/race_list/subrace', methods=["GET", "POST"])
 def subrace_list():
     selected_primary_race = request.args.get('type')
@@ -234,6 +254,7 @@ def campaign_list():
 
     print(campaign_tuple)
     return render_template("campaign_list.html", campaigns=campaign_tuple)
+
 
 @app.route('/class_race_combos', methods=["GET", "POST"])
 def class_race_combos():
