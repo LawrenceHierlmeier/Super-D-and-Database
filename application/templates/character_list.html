@@ -26,37 +26,41 @@
                     </li>
                     {% endfor %}
                 </ul>
+            </div>
         </div>
     </div>
 
-    <h2>Characters</h2>
 
-    <p><b>Fastest Characters:</b></p>
-    {% for char in fastest_chars %}
-        <p>{{ char['name'] }}, Speed: {{ char['speed'] }}</p>
-    {% endfor %}
+    <div class="container">
+        <h2>Characters</h2>
 
-    <p><b>Slowest Characters:</b></p>
-    {% for char in slowest_chars %}
-        <p>{{ char['name'] }}, Speed: {{ char['speed'] }}</p>
-    {% endfor %}
-
-    <div class="row">
-        {% for item in chars %}
-        <div class="column">
-            <div class="card">
-                <a href="{{ url_for('character_page', character_name = item[0].name ) }}"><h3>{{ item[0].name }}</h3></a>
-                <p><b>Race: </b>{{ item[0].race }}</p>
-                <p><b>Class: </b>{{ item[0].class }}</p>
-                <p><b>Strength</b>: {{ item[0].strength }}</p>
-                <p><b>Dexterity</b>: {{ item[0].dexterity }}</p>
-                <p><b>Constitution</b>: {{ item[0].constitution }}</p>
-                <p><b>Intelligence</b>: {{ item[0].intelligence }}</p>
-                <p><b>Wisdom</b>: {{ item[0].wisdom }}</p>
-                <p><b>Charisma</b>: {{ item[0].charisma }}</p>
-            </div>
-        </div>
+        <p><b>Fastest Characters:</b></p>
+        {% for char in fastest_chars %}
+            <p>{{ char['name'] }}, Speed: {{ char['speed'] }}</p>
         {% endfor %}
+
+        <p><b>Slowest Characters:</b></p>
+        {% for char in slowest_chars %}
+            <p>{{ char['name'] }}, Speed: {{ char['speed'] }}</p>
+        {% endfor %}
+
+        <div class="row">
+            {% for item in chars %}
+            <div class="column">
+                <div class="card">
+                    <a href="{{ url_for('character_page', character_name = item[0].name ) }}"><h3>{{ item[0].name }}</h3></a>
+                    <p><b>Race: </b>{{ item[0].race }}</p>
+                    <p><b>Class: </b>{{ item[0].class }}</p>
+                    <p><b>Strength</b>: {{ item[0].strength }}</p>
+                    <p><b>Dexterity</b>: {{ item[0].dexterity }}</p>
+                    <p><b>Constitution</b>: {{ item[0].constitution }}</p>
+                    <p><b>Intelligence</b>: {{ item[0].intelligence }}</p>
+                    <p><b>Wisdom</b>: {{ item[0].wisdom }}</p>
+                    <p><b>Charisma</b>: {{ item[0].charisma }}</p>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
     </div>
 
 </body>

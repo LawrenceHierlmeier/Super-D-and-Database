@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-       <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
     <title>Character Feats</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/character_list.css') }}">
@@ -26,22 +26,25 @@
                     </li>
                     {% endfor %}
                 </ul>
+            </div>
         </div>
     </div>
 
-    <h2> Campaigns </h2>
+    <div class="container">
+        <h2> Campaigns </h2>
 
-    <div class="row">
-        {% for item in campaigns %}
-        <div class="column">
-            <div class="card">
-                <h3>{{ item[0].name }}</h3>
-                <p> Region: {{ item[0].region }}</p>
-                <p> Number of Players: {{ item[0].num_players }}</p>
-                <p> Number of NPCs: {{ item[0].NPCS }}</p>
+        <div class="row">
+            {% for item in campaigns %}
+            <div class="column">
+                <div class="card">
+                    <h3>{{ item[0].name }}</h3>
+                    <p> Region: {{ item[0].region }}</p>
+                    <p> Number of Players: {{ item[0].num_players }}</p>
+                    <p> Number of NPCs: {{ item[0].NPCS }}</p>
+                </div>
             </div>
+            {% endfor %}
         </div>
-        {% endfor %}
     </div>
 
 
