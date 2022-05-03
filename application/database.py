@@ -434,11 +434,9 @@ def slowest_characters():
     with DatabaseConnection('CS2300Proj.db') as connection:
         cursor = connection.cursor()
         # gets names of slowest characters based on race and respective speeds
-        retrieve_query = "SELECT C.NAME, R1.SPEED " \
+        retrieve_query = "SELECT C.NAME, MIN(R1.SPEED) " \
                          "FROM CHARACTER AS C, RACE AS R1 " \
-                         "WHERE R1.SPEED = (SELECT MIN(SPEED) " \
-                         "                  FROM RACE AS R2) " \
-                         "      AND C.RACE_NAME = R1.NAME"
+                         "WHERE C.RACE_NAME = R1.NAME"
         cursor.execute(retrieve_query)
         characters = [{'name': row[0], 'speed': row[1]} for row in cursor.fetchall()]
 
@@ -449,11 +447,9 @@ def fastest_characters():
     with DatabaseConnection('CS2300Proj.db') as connection:
         cursor = connection.cursor()
         # gets names of fastest characters based on race and respective speeds
-        retrieve_query = "SELECT C.NAME, R1.SPEED " \
+        retrieve_query = "SELECT C.NAME, MAX(R1.SPEED) " \
                          "FROM CHARACTER AS C, RACE AS R1 " \
-                         "WHERE R1.SPEED = (SELECT MAX(SPEED) " \
-                         "                  FROM RACE AS R2) " \
-                         "      AND C.RACE_NAME = R1.NAME"
+                         "WHERE C.RACE_NAME = R1.NAME"
         cursor.execute(retrieve_query)
         characters = [{'name': row[0], 'speed': row[1]} for row in cursor.fetchall()]
 
