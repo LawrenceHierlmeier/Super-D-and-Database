@@ -7,7 +7,7 @@ app = Flask(__name__)
 nav = Navigation(app)
 
 # Initializing Navigation
-nav.Bar('top', [
+nav.Bar('home', [
     nav.Item('Home', 'home'),
     nav.Item('Characters', 'character_list'),
     nav.Item('Campaigns', 'campaign_list'),
@@ -15,13 +15,23 @@ nav.Bar('top', [
     nav.Item('Races', 'race_list'),
     nav.Item('Classes', 'class_list'),
     nav.Item('Class and Race Combinations', 'class_race_combos'),
+])
+
+nav.Bar('character', [
+    nav.Item('Home', 'home'),
     nav.Item('Add Character', 'insert_character'),
-    nav.Item('Add Campaign', 'insert_campaign'),
-    nav.Item('Edit Campaign', 'edit_campaign'),
     nav.Item('Add Character to Campaign', 'add_char_to_campaign'),
     nav.Item('Add Feat to Character', 'add_feat_to_character'),
     nav.Item('Add Class to Character', 'add_class_to_character'),
     nav.Item('Add Item to Character Inventory', 'insert_character_inventory')
+])
+
+nav.Bar('campaign', [
+    nav.Item('Home', 'home'),
+    nav.Item('Campaigns', 'campaign_list'),
+    nav.Item('Add Campaign', 'insert_campaign'),
+    nav.Item('Edit Campaign', 'edit_campaign'),
+    nav.Item('Add Character to Campaign', 'add_char_to_campaign')
 ])
 
 

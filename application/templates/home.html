@@ -2,19 +2,35 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
     <title>Home</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+
+</head>
+<body>
+    <div class="container">
+        <div class="navbar navbar-expand-lg navbar-light bg-light">
+             <a class="navbar-brand" href="#">Navbar</a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+             <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav mr-auto">
+                    {% for item in nav.home %}
+                    <li class="{{ 'active' if item.is_active else '' }} nav-item">
+                        <a class='nav-link' href="{{ item.url }}">{{ item.label }}</a>
+                    </li>
+                    {% endfor %}
+                </ul>
+        </div>
+    </div>
+
     <h1>Welcome to Super D&Database!</h1>
     <h3>The Dungeons & Dragons Management System</h3>
     <h4>Created by Lawrence Hierlmeier, Pierce Dreiling, and Caleb Ramey</h4>
-</head>
-<body>
-<ul>
-    {% for item in nav.top %}
-    <li class="{{ 'active' if item.is_active else '' }}">
-        <a href="{{ item.url }}">{{ item.label }}</a>
-    </li>
-    {% endfor %}
-</ul>
 </body>
 </html> 
