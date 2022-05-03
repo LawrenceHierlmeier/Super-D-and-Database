@@ -54,6 +54,20 @@ def character_list():
 
 @app.route('/characters/<character_name>', methods=["GET", "POST"])
 def character_page(character_name):
+    if request.method == "POST":
+        if request.form['submit'] == "Remove Item":
+            item = request.form["item"]
+            print(item)
+            database.remove_item_from_inventory(item, character_name)
+        elif request.form['submit'] == "Remove Feat":
+            feat = request.form['feat']
+            print(feat)
+            database.remove_feat_from_character(character_name, feat)
+        elif request.form['submit'] == "Remove Class":
+            char_class = request.form['class']
+            print(char_class)
+            database.remove_class_from_character(character_name, char_class)
+
     character = database.get_character_info(character_name)
     print(character)
     race_info = database.get_race_info(character[0]['race'])
@@ -62,16 +76,6 @@ def character_page(character_name):
     for i in range(len(character)):
         class_info.append(database.get_class_info(character[i]['class']))
     print(class_info)
-
-    if request.method == "POST":
-        if request.form['submit'] == "Remove Item":
-            item = request.form["item"]
-            print(item)
-            database.remove_item_from_inventory(item, character_name)
-        if request.form['submit'] == "Remove Feat":
-            feat = request.form['feat']
-            print(feat)
-            database.remove_feat_from_character(character_name, feat)
 
     character_inventory = database.get_character_inventory(character_name)
 

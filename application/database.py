@@ -269,14 +269,24 @@ def add_item_to_inventory(item, item_weight, character_name):
     with DatabaseConnection('CS2300Proj.db') as connection:
         cursor = connection.cursor()
         # get character strength score to calculate inventory weight capacity
-        retrieve_query = "SELECT STRENGTH " \
-                         "FROM CHARACTER " \
-                         "WHERE NAME = ?"
-        cursor.execute(retrieve_query, (character_name,))
+        retrieve_capacity = "SELECT STRENGTH " \
+                            "FROM CHARACTER " \
+                            "WHERE NAME = ?"
+        cursor.execute(retrieve_capacity, (character_name,))
         capacity = cursor.fetchone()
+
+        retrieve_current_weight = "SELECT ITEM_WEIGHT " \
+                                  "FROM INVENTORY " \
+                                  "WHERE CHARACTER_NAME = ?"
+        cursor.execute(retrieve_current_weight, (character_name,))
+        current_item_weights = cursor.fetchall()
+        current_weight = 0
+        for i in range(len(current_item_weights)):
+            current_weight += current_item_weights[i][0]
+
         # if adding item keeps weight below or at capacity
         # inventory_weight(character_name)
-        if 0 + int(item_weight) <= capacity[0]:
+        if current_weight + int(item_weight) <= capacity[0]:
             add_query = "INSERT INTO INVENTORY VALUES (?, ?, ?)"
             cursor.execute(add_query, (item, item_weight, character_name,))
         else:  # over capacity

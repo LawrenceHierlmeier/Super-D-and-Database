@@ -26,6 +26,12 @@
 
     {% for class in class_info %}
     <h2>Class: {{ class[0].name }}</h2>
+    {% if class_info|length > 1 %}
+    <form action="" method="POST">
+        <input type="hidden" name="class" value="{{ class[0].name }}">
+        <a href="{{ url_for('character_page', character_name = character[0].name) }}"><input type="submit" name="submit" value="Remove Class" formmethod="POST"/></a>
+    </form>
+    {% endif %}
     <p>Hit-Die: d{{ class[0].hit_die }}</p>
     <p>Saving Throws: {{ class[0].saving_throws }}</p>
     {% endfor %}
@@ -58,4 +64,5 @@
     
 </ul>
 </body>
+
 </html>
