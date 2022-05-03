@@ -7,14 +7,14 @@
 </head>
 <body>
 <form action="" method="POST">
-    <p> Character
+    <p>Choose Character
         <select name="chosen_name" method="GET" action="/">
             {% for char in characters %}
                 <option value="{{char['name']}}">{{char['name']}}</option>
             {% endfor %}
         </select>
     </p>
-    <p> Campaign
+    <p>Choose Campaign
         <select name="chosen_campaign" method="GET" action="/">
             {% for camp in campaigns %}
                 <option value="{{camp['name']}}">{{camp['name']}}</option>

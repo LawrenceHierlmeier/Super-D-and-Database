@@ -4,19 +4,28 @@
     <meta charset="UTF-8">
     <title>Edit Campaign</title>
     <h1>Edit a Campaign</h1>
+    <script>
+        function ddlselect()
+        {
+            var d=document.getElementById("ddselect");
+            var displaytext=d.options[d.selectedIndex].text;
+            document.getElementById("txtvalue").value=displaytext;
+            document.getElementById("ddselect").options[0].disabled = true;
+        }
+    </script>
 </head>
 <body>
 <form action="" method="POST">
     <p>Campaign
-        <select name="old_name" action="/">
-            <option hidden="">Choose a Campaign</option>
+        <select name="old_name" action="/" id="ddselect" onchange="ddlselect();">
+            <option value="" id="todisable">--Choose a Campaign--</option>
             {% for camp in campaigns %}
                 <option value="{{camp['name']}}">{{camp['name']}}</option>
             {% endfor %}
         </select>
         <input type="submit" name="submit" value="Delete Campaign" formmethod="POST"/>
     </p>
-    <p> New Name <input type="text" name="new_name" /></p>
+    <p> New Name <input type="text" name="new_name" id="txtvalue" /></p>
     <p> Region <input type="text" name="region" /></p>
     <p> Number of NPCs <input type="number" name="num_npcs" min="0" value=0 /></p>
     <p><a href="{{ url_for('edit_campaign') }}"><input type="submit" name="submit" value="Update" formmethod="POST"/></a></p>

@@ -13,17 +13,17 @@
     </li>
     {% endfor %}
 
-    <a href="{{ url_for('remove_feat_from_character', character_name = character[0].name ) }}"><h2>Remove a Feat</h2></a>
-    <a href="{{ url_for('remove_class_from_character', character_name = character[0].name ) }}"><h2>Remove a Class</h2></a>
     <a href="{{ url_for('edit_character', character_name = character[0].name ) }}"><h2>Edit this Character</h2></a>
 
-    <h1>{{ character[0].name }}</h1>
+    <h1>{{ character[0].name }} </h1>
 
     <h2>Race: {{ race_info[0].name }}</h2>
     <p>Languages: {{ race_info[0].languages }}</p>
     <p>Speed: {{ race_info[0].speed }}</p>
     <p>Size: {{ race_info[0].size }}</p>
 
+
+    <h2>Class(es):</h2>
     {% for class in class_info %}
     <h2>Class: {{ class[0].name }}</h2>
     {% if class_info|length > 1 %}
@@ -37,6 +37,14 @@
     {% endfor %}
 
 
+    <h2>Campaign: {{ character[0].campaign }}
+        <form action="" method="POST">
+            <input type="hidden" name="campaign" value="{{ character[0].campaign }}">
+            <a href="{{ url_for('character_page', character_name = character[0].name) }}"><input type="submit" name="submit" value="Remove from Campaign" formmethod="POST"/></a>
+        </form>
+    </h2>
+
+
     <h2>Feats:</h2>
     {% for feat in feats %}
     <p>Name: {{ feat[0].name }}</p>
@@ -47,7 +55,10 @@
     </form>
     {% endfor %}
 
+
     <h2>Inventory:</h2>
+    <p><b>Number of Items:</b> {{num_items}}</p>
+    <p><b>Total Weight:</b> {{weight}}</p>
     <ul>
         {% for item in inventory %}
         <li>{{ item.item }}
@@ -59,9 +70,6 @@
         {% endfor %}
     </ul>
 
-
-
-    
 </ul>
 </body>
 
